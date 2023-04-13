@@ -11,7 +11,7 @@ package com.acs.readertest;
 
 import static com.acs.readertest.R.id.main_edit_text_command;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,11 +52,12 @@ import com.acs.smartcard.Reader.OnStateChangeListener;
 import com.acs.smartcard.TlvProperties;
 
 /**
- * Test program for ACS smart card readers.
- * 
- * @author Godfrey Chung
- * @version 1.1.1, 16 Apr 2013
+ * Read and write program for ACR122U reader
+ *
+ * @author Rousselet Léo, Pigot Kris, Chen Coline ESME
+ * @version 0.1 13/01/2023
  */
+
 public class MainActivity extends Activity {
 
     private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
@@ -286,7 +287,7 @@ public class MainActivity extends Activity {
 
     }
 
-    private class PowerParams {
+    private static class PowerParams {
 
         public int slotNum;
         public int action;
@@ -428,12 +429,12 @@ public class MainActivity extends Activity {
         @Override
         protected Void doInBackground(TransmitParams... params) {
 
-            TransmitProgress progress = null;
+            TransmitProgress progress;
 
-            byte[] command = null;
-            byte[] response = null;
-            int responseLength = 0;
-            int foundIndex = 0;
+            byte[] command;
+            byte[] response;
+            int responseLength;
+            int foundIndex;
             int startIndex = 0;
 
             do {
@@ -643,7 +644,7 @@ public class MainActivity extends Activity {
         mResponseTextView.setText("");
 
         // Initialize reader spinner
-        mReaderAdapter = new ArrayAdapter<String>(this,
+        mReaderAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item);
         for (UsbDevice device : mManager.getDeviceList().values()) {
             if (mReader.isSupported(device)) {
@@ -654,13 +655,13 @@ public class MainActivity extends Activity {
         mReaderSpinner.setAdapter(mReaderAdapter);
 
         // Initialize slot spinner
-        mSlotAdapter = new ArrayAdapter<String>(this,
+        mSlotAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item);
         mSlotSpinner = (Spinner) findViewById(R.id.main_spinner_slot);
         mSlotSpinner.setAdapter(mSlotAdapter);
 
         // Initialize power spinner
-        ArrayAdapter<String> powerAdapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> powerAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, powerActionStrings);
         mPowerSpinner = (Spinner) findViewById(R.id.main_spinner_power);
         mPowerSpinner.setAdapter(powerAdapter);
@@ -895,14 +896,14 @@ public class MainActivity extends Activity {
                     if (mT1CheckBox.isChecked()) {
 
                         preferredProtocols |= Reader.PROTOCOL_T1;
-                        if (preferredProtocolsString != "") {
+                        if (!preferredProtocolsString.equals("")) {
                             preferredProtocolsString += "/";
                         }
 
                         preferredProtocolsString += "T=1";
                     }
 
-                    if (preferredProtocolsString == "") {
+                    if (preferredProtocolsString.equals("")) {
                         preferredProtocolsString = "None";
                     }
 
@@ -1233,42 +1234,42 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_timeout);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinVerify.setTimeOut(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_timeout2);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinVerify.setTimeOut2(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_format_string);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinVerify.setFormatString(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_pin_block_string);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinVerify.setPinBlockString(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_pin_length_format);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinVerify.setPinLengthFormat(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_pin_max_extra_digit);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 1) {
+                            if (buffer.length > 1) {
                                 mPinVerify
                                         .setPinMaxExtraDigit((buffer[0] & 0xFF) << 8
                                                 | (buffer[1] & 0xFF));
@@ -1277,7 +1278,7 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_entry_validation_condition);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinVerify
                                         .setEntryValidationCondition(buffer[0] & 0xFF);
                             }
@@ -1285,14 +1286,14 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_number_message);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinVerify.setNumberMessage(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_lang_id);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 1) {
+                            if (buffer.length > 1) {
                                 mPinVerify.setLangId((buffer[0] & 0xFF) << 8
                                         | (buffer[1] & 0xFF));
                             }
@@ -1300,14 +1301,14 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_msg_index);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinVerify.setMsgIndex(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_teo_prologue);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 2) {
+                            if (buffer.length > 2) {
                                 mPinVerify.setTeoPrologue(0, buffer[0] & 0xFF);
                                 mPinVerify.setTeoPrologue(1, buffer[1] & 0xFF);
                                 mPinVerify.setTeoPrologue(2, buffer[2] & 0xFF);
@@ -1316,7 +1317,7 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.verify_pin_dialog_edit_text_data);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinVerify.setData(buffer, buffer.length);
                             }
 
@@ -1381,42 +1382,42 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_timeout);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify.setTimeOut(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_timeout2);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify.setTimeOut2(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_format_string);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify.setFormatString(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_pin_block_string);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify.setPinBlockString(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_pin_length_format);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify.setPinLengthFormat(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_insertion_offset_old);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify
                                         .setInsertionOffsetOld(buffer[0] & 0xFF);
                             }
@@ -1424,7 +1425,7 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_insertion_offset_new);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify
                                         .setInsertionOffsetNew(buffer[0] & 0xFF);
                             }
@@ -1432,7 +1433,7 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_pin_max_extra_digit);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 1) {
+                            if (buffer.length > 1) {
                                 mPinModify
                                         .setPinMaxExtraDigit((buffer[0] & 0xFF) << 8
                                                 | (buffer[1] & 0xFF));
@@ -1441,14 +1442,14 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_confirm_pin);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify.setConfirmPin(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_entry_validation_condition);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify
                                         .setEntryValidationCondition(buffer[0] & 0xFF);
                             }
@@ -1456,14 +1457,14 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_number_message);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify.setNumberMessage(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_lang_id);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 1) {
+                            if (buffer.length > 1) {
                                 mPinModify.setLangId((buffer[0] & 0xFF) << 8
                                         | (buffer[1] & 0xFF));
                             }
@@ -1471,28 +1472,28 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_msg_index1);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify.setMsgIndex1(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_msg_index2);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify.setMsgIndex2(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_msg_index3);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify.setMsgIndex3(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_teo_prologue);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 2) {
+                            if (buffer.length > 2) {
                                 mPinModify.setTeoPrologue(0, buffer[0] & 0xFF);
                                 mPinModify.setTeoPrologue(1, buffer[1] & 0xFF);
                                 mPinModify.setTeoPrologue(2, buffer[2] & 0xFF);
@@ -1501,7 +1502,7 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.modify_pin_dialog_edit_text_data);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mPinModify.setData(buffer, buffer.length);
                             }
 
@@ -1564,14 +1565,14 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.read_key_dialog_edit_text_timeout);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mReadKeyOption.setTimeOut(buffer[0] & 0xFF);
                             }
 
                             editText = (EditText) layout
                                     .findViewById(R.id.read_key_dialog_edit_text_pin_max_extra_digit);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 1) {
+                            if (buffer.length > 1) {
                                 mReadKeyOption
                                         .setPinMaxExtraDigit((buffer[0] & 0xFF) << 8
                                                 | (buffer[1] & 0xFF));
@@ -1580,7 +1581,7 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.read_key_dialog_edit_text_key_return_condition);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mReadKeyOption
                                         .setKeyReturnCondition(buffer[0] & 0xFF);
                             }
@@ -1588,7 +1589,7 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.read_key_dialog_edit_text_echo_lcd_start_position);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mReadKeyOption
                                         .setEchoLcdStartPosition(buffer[0] & 0xFF);
                             }
@@ -1596,7 +1597,7 @@ public class MainActivity extends Activity {
                             editText = (EditText) layout
                                     .findViewById(R.id.read_key_dialog_edit_text_echo_lcd_mode);
                             buffer = toByteArray(editText.getText().toString());
-                            if (buffer != null && buffer.length > 0) {
+                            if (buffer.length > 0) {
                                 mReadKeyOption.setEchoLcdMode(buffer[0] & 0xFF);
                             }
 
@@ -1669,12 +1670,8 @@ public class MainActivity extends Activity {
                                 TransmitParams params = new TransmitParams();
                                 params.slotNum = slotNum;
                                 params.controlCode = Reader.IOCTL_ACR83_DISPLAY_LCD_MESSAGE;
-                                try {
-                                    params.commandString = toHexString(mLcdMessage
-                                            .getBytes("US-ASCII"));
-                                } catch (UnsupportedEncodingException e) {
-                                    params.commandString = "";
-                                }
+                                params.commandString = toHexString(mLcdMessage
+                                        .getBytes(StandardCharsets.US_ASCII));
 
                                 // Transmit control command
                                 logMsg("Slot "
@@ -1909,7 +1906,7 @@ public class MainActivity extends Activity {
      */
     private void logBuffer(byte[] buffer, int bufferLength) {
 
-        String bufferString = "";
+        StringBuilder bufferString = new StringBuilder();
 
         for (int i = 0; i < bufferLength; i++) {
 
@@ -1920,18 +1917,18 @@ public class MainActivity extends Activity {
 
             if (i % 16 == 0) {
 
-                if (bufferString != "") {
+                if (!bufferString.toString().equals("")) {
 
-                    logMsg(bufferString);
-                    bufferString = "";
+                    logMsg(bufferString.toString());
+                    bufferString = new StringBuilder();
                 }
             }
 
-            bufferString += hexChar.toUpperCase() + " ";
+            bufferString.append(hexChar.toUpperCase()).append(" ");
         }
 
-        if (bufferString != "") {
-            logMsg(bufferString);
+        if (!bufferString.toString().equals("")) {
+            logMsg(bufferString.toString());
         }
     }
 
@@ -1945,7 +1942,7 @@ public class MainActivity extends Activity {
     private byte[] toByteArray(String hexString) {
 
         int hexStringLength = hexString.length();
-        byte[] byteArray = null;
+        byte[] byteArray;
         int count = 0;
         char c;
         int i;
@@ -2022,18 +2019,28 @@ public class MainActivity extends Activity {
      */
     private String toHexString(byte[] buffer) {
 
-        String bufferString = "";
+        StringBuilder bufferString = new StringBuilder();
 
-        for (int i = 0; i < buffer.length; i++) {
+        for (byte b : buffer) {
 
-            String hexChar = Integer.toHexString(buffer[i] & 0xFF);
+            String hexChar = Integer.toHexString(b & 0xFF);
             if (hexChar.length() == 1) {
                 hexChar = "0" + hexChar;
             }
 
-            bufferString += hexChar.toUpperCase() + " ";
+            bufferString.append(hexChar.toUpperCase()).append(" ");
         }
 
-        return bufferString;
+        return bufferString.toString();
+    }
+
+
+
+    private String readTag(String hexStartPage, String hexNumberBytes ){
+        return "FF B0 00" + hexStartPage + hexNumberBytes;
+    }
+
+    private String writeUltralight(String hexStartPage, String hexNumberBytes, String hexText){
+        return "FF D6 00" + hexStartPage + hexNumberBytes + hexText;
     }
 }

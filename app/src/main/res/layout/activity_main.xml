@@ -251,12 +251,14 @@
 
         <EditText
             android:id="@+id/main_edit_text_command"
+            android:hint="Enter APDU here"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            android:inputType="textMultiLine">
+            android:inputType="textMultiLine"
 
             <requestFocus></requestFocus>
         </EditText>
+
     </LinearLayout>
 </LinearLayout>
