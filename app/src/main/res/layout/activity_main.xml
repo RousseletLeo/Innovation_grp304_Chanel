@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -17,8 +19,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reader:"
-                android:textSize="20dp"></TextView>
+                android:text="@string/reader"
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -28,13 +30,13 @@
                 <Spinner
                     android:id="@+id/main_spinner_reader"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></Spinner>
+                    android:layout_height="wrap_content" />
 
                 <Button
                     android:id="@+id/main_button_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="List"></Button>
+                    android:text="@string/list" />
             </LinearLayout>
 
             <LinearLayout
@@ -46,20 +48,20 @@
                     android:id="@+id/main_button_open"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Open"></Button>
+                    android:text="@string/open" />
 
                 <Button
                     android:id="@+id/main_button_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Close"></Button>
+                    android:text="@string/close" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Slot:"
-                android:textSize="20dp"></TextView>
+                android:text="@string/informations_lecteur"
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -69,20 +71,26 @@
                 <Spinner
                     android:id="@+id/main_spinner_slot"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></Spinner>
+                    android:layout_height="wrap_content" />
 
                 <Button
                     android:id="@+id/main_button_get_state"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Get State"></Button>
+                    android:text="@string/get_state" />
+
+                <Button
+                    android:id="@+id/main_button_get_features"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/get_features" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Power Action:"
-                android:textSize="20dp"></TextView>
+                android:text="@string/power_action"
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -92,68 +100,22 @@
                 <Spinner
                     android:id="@+id/main_spinner_power"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></Spinner>
+                    android:layout_height="wrap_content" />
 
                 <Button
                     android:id="@+id/main_button_power"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Power"></Button>
+                    android:text="@string/power" />
 
-                <Button
-                    android:id="@+id/main_button_get_atr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Get ATR"></Button>
             </LinearLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Protocol:"
-                android:textSize="20dp"></TextView>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/main_check_box_t0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="T=0"></CheckBox>
-
-                <CheckBox
-                    android:id="@+id/main_check_box_t1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="T=1"></CheckBox>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/main_button_set_protocol"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Set Protocol"></Button>
-
-                <Button
-                    android:id="@+id/main_button_get_protocol"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Get Protocol"></Button>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Transmit / Control:"
-                android:textSize="20dp"></TextView>
+                android:text="@string/transmit_control"
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -164,74 +126,22 @@
                     android:id="@+id/main_button_transmit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Transmit"></Button>
+                    android:text="@string/transmit" />
 
                 <Button
                     android:id="@+id/main_button_control"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Control"></Button>
+                    android:text="@string/control" />
 
                 <EditText
                     android:id="@+id/main_edit_text_control"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"></EditText>
+                    android:inputType="number"
+                    android:importantForAutofill="no" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Secure PIN Entry:"
-                android:textSize="20dp"></TextView>
-
-            <Button
-                android:id="@+id/main_button_get_features"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Get Features"></Button>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/main_button_verify_pin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Verify PIN"></Button>
-
-                <Button
-                    android:id="@+id/main_button_modify_pin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Modify PIN"></Button>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ACR83 / APG8201:"
-                android:textSize="20dp"></TextView>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/main_button_read_key"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Read Key"></Button>
-
-                <Button
-                    android:id="@+id/main_button_display_lcd_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Display LCD Message"></Button>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -246,18 +156,17 @@
             android:id="@+id/main_text_view_response"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.9"
-            android:text="TextView"></TextView>
+            android:layout_weight="0.9" />
 
         <EditText
             android:id="@+id/main_edit_text_command"
-            android:hint="Enter APDU here"
+            android:hint="@string/enter_apdu_here"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
             android:inputType="textMultiLine"
-
-            <requestFocus></requestFocus>
+            android:autofillHints="no" >
+            <requestFocus />
         </EditText>
 
     </LinearLayout>
