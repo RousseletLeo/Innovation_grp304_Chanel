@@ -5,7 +5,7 @@
         android:showAsAction="always"
         android:title="@string/action_developpers_mode"
         android:icon="@drawable/baseline_device_hub_24"
-        android:onClick="method name"
+        android:onClick="method_dev"
         />
 
     <item
@@ -13,6 +13,7 @@
         android:showAsAction="always"
         android:title="@string/action_settings"
         android:icon="@drawable/baseline_settings_24"
+        android:onClick="method_settings"
         />
 
 </menu>

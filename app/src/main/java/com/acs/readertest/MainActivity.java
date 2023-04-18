@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+
 import com.acs.smartcard.Features;
 import com.acs.smartcard.PinProperties;
 import com.acs.smartcard.Reader;
@@ -93,6 +94,11 @@ public class MainActivity extends Activity {
     private Button mControlButton;
     private Button mGetFeaturesButton;
     private final Features mFeatures = new Features();
+
+    /*Code de Krissou*/
+
+    /*Code de Krissou*/
+
 
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -828,4 +834,5 @@ public class MainActivity extends Activity {
         mControlButton.setEnabled(bool);
         mGetFeaturesButton.setEnabled(bool);
     }
+
 }
