@@ -60,35 +60,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/informations_lecteur"
-                android:textSize="20sp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/main_spinner_slot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/main_button_get_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/get_state" />
-
-                <Button
-                    android:id="@+id/main_button_get_features"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/get_features" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/power_action"
                 android:textSize="20sp" />
 
@@ -129,17 +100,11 @@
                     android:text="@string/transmit" />
 
                 <Button
-                    android:id="@+id/main_button_control"
+                    android:id="@+id/main_button_ReadTag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/control" />
+                    android:text="@string/ReadTag" />
 
-                <EditText
-                    android:id="@+id/main_edit_text_control"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:importantForAutofill="no" />
             </LinearLayout>
 
         </LinearLayout>

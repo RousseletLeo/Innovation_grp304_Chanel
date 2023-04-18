@@ -1,12 +1,3 @@
-/*
- * Copyright (C) 2011-2013 Advanced Card Systems Ltd. All Rights Reserved.
- *
- * This software is the confidential and proprietary information of Advanced
- * Card Systems Ltd. ("Confidential Information").  You shall not disclose such
- * Confidential Information and shall use it only in accordance with the terms
- * of the license agreement you entered into with ACS.
- */
-
 package com.acs.readertest;
 
 import android.app.Activity;
@@ -30,17 +21,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.acs.smartcard.Features;
-import com.acs.smartcard.PinProperties;
 import com.acs.smartcard.Reader;
 import com.acs.smartcard.Reader.OnStateChangeListener;
-import com.acs.smartcard.TlvProperties;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Read and write program for ACR122U reader
+ * Read and write Mifare ultralight and Mifare Classik 1k program for ACR122U reader
  *
  * @author Rousselet Léo, Pigot Kris, Chen Coline ESME
  * @version 0.1 13/01/2023
@@ -50,28 +39,10 @@ public class MainActivity extends Activity {
 
     private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
 
-    private static final String[] powerActionStrings = { "Power Down",
-            "Cold Reset", "Warm Reset" };
+    private static final String[] powerActionStrings = { "Power Down", "Cold Reset", "Warm Reset" };
 
-    private static final String[] stateStrings = { "Unknown", "Absent",
-            "Present", "Swallowed", "Powered", "Negotiable", "Specific" };
-
-    private static final String[] featureStrings = { "FEATURE_UNKNOWN",
-            "FEATURE_VERIFY_PIN_START", "FEATURE_VERIFY_PIN_FINISH",
-            "FEATURE_MODIFY_PIN_START", "FEATURE_MODIFY_PIN_FINISH",
-            "FEATURE_GET_KEY_PRESSED", "FEATURE_VERIFY_PIN_DIRECT",
-            "FEATURE_MODIFY_PIN_DIRECT", "FEATURE_MCT_READER_DIRECT",
-            "FEATURE_MCT_UNIVERSAL", "FEATURE_IFD_PIN_PROPERTIES",
-            "FEATURE_ABORT", "FEATURE_SET_SPE_MESSAGE",
-            "FEATURE_VERIFY_PIN_DIRECT_APP_ID",
-            "FEATURE_MODIFY_PIN_DIRECT_APP_ID", "FEATURE_WRITE_DISPLAY",
-            "FEATURE_GET_KEY", "FEATURE_IFD_DISPLAY_PROPERTIES",
-            "FEATURE_GET_TLV_PROPERTIES", "FEATURE_CCID_ESC_COMMAND" };
-
-    private static final String[] propertyStrings = { "Unknown", "wLcdLayout",
-            "bEntryValidationCondition", "bTimeOut2", "wLcdMaxCharacters",
-            "wLcdMaxLines", "bMinPINSize", "bMaxPINSize", "sFirmwareID",
-            "bPPDUSupport", "dwMaxAPDUDataSize", "wIdVendor", "wIdProduct" };
+    private static final String[] stateStrings = { "Unknown", "Absent", "Present",
+            "Swallowed", "Powered", "Negotiable", "Specific" };
 
     private UsbManager mManager;
     private Reader mReader;
@@ -80,32 +51,25 @@ public class MainActivity extends Activity {
     private TextView mResponseTextView;
     private Spinner mReaderSpinner;
     private ArrayAdapter<String> mReaderAdapter;
-    private Spinner mSlotSpinner;
-    private ArrayAdapter<String> mSlotAdapter;
     private Spinner mPowerSpinner;
     private Button mOpenButton;
     private Button mCloseButton;
-    private Button mGetStateButton;
     private Button mPowerButton;
     private EditText mCommandEditText;
     private Button mTransmitButton;
-    private EditText mControlEditText;
-    private Button mControlButton;
-    private Button mGetFeaturesButton;
+    private Button mReadTagButton;
     private final Features mFeatures = new Features();
 
-
+    //Check la connection USB avec le lecteur, et l'autorisation à utiliser le lecteur.
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
 
             String action = intent.getAction();
-
+            //Si appareil en USB detecté, on demande l'autorisation de check.
             if (ACTION_USB_PERMISSION.equals(action)) {
-
                 synchronized (this) {
                     UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-
                     if (intent.getBooleanExtra(
                             UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
                         if (device != null) {
@@ -117,12 +81,11 @@ public class MainActivity extends Activity {
                         mOpenButton.setEnabled(true);
                     }
                 }
-
-            } else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
+            }
+            //Shut down le lecteur si déconecté du port USB
+            else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
 
                 synchronized (this) {
-
-                    // Update reader list
                     mReaderAdapter.clear();
                     for (UsbDevice device : mManager.getDeviceList().values()) {
                         if (mReader.isSupported(device)) {
@@ -132,12 +95,7 @@ public class MainActivity extends Activity {
                     UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
 
                     if (device != null && device.equals(mReader.getDevice())) {
-
-                        // Disable buttons
                         setButtons(false);
-                        // Clear slot items
-                        mSlotAdapter.clear();
-                        // Close reader
                         logMsg("Closing reader...");
                         new CloseTask().execute();
                     }
@@ -148,9 +106,14 @@ public class MainActivity extends Activity {
 
 
 
+
+
+
+    //Ouvrir l'accès au lecteur
     private class OpenTask extends AsyncTask<UsbDevice, Void, Exception> {
 
         @Override
+        //Ouvre le lecteur
         protected Exception doInBackground(UsbDevice... params) {
             Exception result = null;
             try {
@@ -162,22 +125,16 @@ public class MainActivity extends Activity {
         }
 
         @Override
+        //Affiche les propriétés du lecteur une fois ouvert
         protected void onPostExecute(Exception result) {
 
             if (result != null) {
                 logMsg(result.toString());
-            } else {
 
+            } else {
                 logMsg("Reader name: " + mReader.getReaderName());
                 int numSlots = mReader.getNumSlots();
                 logMsg("Number of slots: " + numSlots);
-
-                // Add slot items
-                mSlotAdapter.clear();
-                for (int i = 0; i < numSlots; i++) {
-                    mSlotAdapter.add(Integer.toString(i));
-                }
-
                 // Remove all control codes
                 mFeatures.clear();
                 setButtons(true);
@@ -185,6 +142,11 @@ public class MainActivity extends Activity {
         }
     }
 
+
+
+
+
+    //Fermer l'accès au lecteur
     private class CloseTask extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -192,26 +154,28 @@ public class MainActivity extends Activity {
             mReader.close();
             return null;
         }
-
         @Override
         protected void onPostExecute(Void result) {
             mOpenButton.setEnabled(true);
         }
-
     }
 
-    private static class PowerParams {
 
+
+
+
+
+    private static class PowerParams {
         public int slotNum;
         public int action;
     }
 
     private static class PowerResult {
-
         public byte[] atr;
         public Exception e;
     }
 
+    //Alimente la carte NFC
     private class PowerTask extends AsyncTask<PowerParams, Void, PowerResult> {
 
         @Override
@@ -231,7 +195,7 @@ public class MainActivity extends Activity {
             if (result.e != null) {
                 logMsg(result.e.toString());
             } else {
-                // Show ATR
+                // Show ATR : ultralight ou class1k
                 if (result.atr != null) {
                     logMsg("ATR:");
                     logBuffer(result.atr, result.atr.length);
@@ -241,6 +205,12 @@ public class MainActivity extends Activity {
             }
         }
     }
+
+
+
+
+
+
 
     private static class SetProtocolParams {
         public int slotNum;
@@ -252,6 +222,8 @@ public class MainActivity extends Activity {
         public Exception e;
     }
 
+
+    //Set le protocol de la carte (Pour ultralight ou class1k, forcément T=1)
     private class SetProtocolTask extends AsyncTask<SetProtocolParams, Void, SetProtocolResult> {
 
         @Override
@@ -269,23 +241,20 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(SetProtocolResult result) {
-
             if (result.e != null) {
                 logMsg(result.e.toString());
 
             } else {
-                String activeProtocolString = "Active Protocol: ";
-
-                if (result.activeProtocol == Reader.PROTOCOL_T1) {
-                    activeProtocolString += "T=1";
-                } else {
-                    activeProtocolString += "Unknown";
-                }
-                // Show active protocol
-                logMsg(activeProtocolString);
+                logMsg("Active Protocol: T=1");
             }
         }
     }
+
+
+
+
+
+
 
     private static class TransmitParams {
         public int slotNum;
@@ -302,6 +271,7 @@ public class MainActivity extends Activity {
         public Exception e;
     }
 
+    //Transmission d'un APDU et caractéritiques
     private class TransmitTask extends
             AsyncTask<TransmitParams, TransmitProgress, Void> {
 
@@ -363,114 +333,48 @@ public class MainActivity extends Activity {
             return null;
         }
 
+
         @Override
         protected void onProgressUpdate(TransmitProgress... progress) {
-
             if (progress[0].e != null) {
                 logMsg(progress[0].e.toString());
-
             } else {
-                logMsg("Command:");
-                logBuffer(progress[0].command, progress[0].commandLength);
-
-                logMsg("Response:");
                 logBuffer(progress[0].response, progress[0].responseLength);
-
-                if (progress[0].response != null
-                        && progress[0].responseLength > 0) {
-
-                    int controlCode;
-                    int i;
-
-                    // Show control codes for IOCTL_GET_FEATURE_REQUEST
-                    if (progress[0].controlCode == Reader.IOCTL_GET_FEATURE_REQUEST) {
-
-                        mFeatures.fromByteArray(progress[0].response,
-                                progress[0].responseLength);
-
-                        logMsg("Features:");
-                        for (i = Features.FEATURE_VERIFY_PIN_START; i <= Features.FEATURE_CCID_ESC_COMMAND; i++) {
-
-                            controlCode = mFeatures.getControlCode(i);
-                            if (controlCode >= 0) {
-                                logMsg("Control Code: " + controlCode + " ("
-                                        + featureStrings[i] + ")");
-                            }
-                        }
-                    }
-
-                    controlCode = mFeatures
-                            .getControlCode(Features.FEATURE_IFD_PIN_PROPERTIES);
-                    if (controlCode >= 0
-                            && progress[0].controlCode == controlCode) {
-
-                        PinProperties pinProperties = new PinProperties(
-                                progress[0].response,
-                                progress[0].responseLength);
-
-                        logMsg("PIN Properties:");
-                        logMsg("LCD Layout: "
-                                + NfcUtils.toHexString(pinProperties.getLcdLayout()));
-                        logMsg("Entry Validation Condition: "
-                                + NfcUtils.toHexString(pinProperties
-                                        .getEntryValidationCondition()));
-                        logMsg("Timeout 2: "
-                                + NfcUtils.toHexString(pinProperties.getTimeOut2()));
-                    }
-
-                    controlCode = mFeatures
-                            .getControlCode(Features.FEATURE_GET_TLV_PROPERTIES);
-                    if (controlCode >= 0
-                            && progress[0].controlCode == controlCode) {
-
-                        TlvProperties readerProperties = new TlvProperties(
-                                progress[0].response,
-                                progress[0].responseLength);
-
-                        Object property;
-                        logMsg("TLV Properties:");
-                        for (i = TlvProperties.PROPERTY_wLcdLayout; i <= TlvProperties.PROPERTY_wIdProduct; i++) {
-
-                            property = readerProperties.getProperty(i);
-                            if (property instanceof Integer) {
-                                logMsg(propertyStrings[i] + ": "
-                                        + NfcUtils.toHexString((Integer) property));
-                            } else if (property instanceof String) {
-                                logMsg(propertyStrings[i] + ": " + property);
-                            }
-                        }
-                    }
-                }
             }
         }
     }
 
+
+
+
+
+
     @Override
+    //Initialisation des composants au lancement de l'appli
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Get USB manager
         mManager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        // Initialize reader
+        // Initialise le lecteur
+        assert mManager != null;
         mReader = new Reader(mManager);
         mReader.setOnStateChangeListener(new OnStateChangeListener() {
 
             @Override
+            //Vérifie l'état en cours du lecteur (en lecture de carte ou non)
             public void onStateChange(int slotNum, int prevState, int currState) {
 
-                if (prevState < Reader.CARD_UNKNOWN
-                        || prevState > Reader.CARD_SPECIFIC) {
+                if (prevState < Reader.CARD_UNKNOWN || prevState > Reader.CARD_SPECIFIC) {
                     prevState = Reader.CARD_UNKNOWN;
                 }
-                if (currState < Reader.CARD_UNKNOWN
-                        || currState > Reader.CARD_SPECIFIC) {
+                if (currState < Reader.CARD_UNKNOWN || currState > Reader.CARD_SPECIFIC) {
                     currState = Reader.CARD_UNKNOWN;
                 }
                 // Create output string
                 final String outputString = "Slot " + slotNum + ": "
-                        + stateStrings[prevState] + " -> "
-                        + stateStrings[currState];
+                        + stateStrings[prevState] + " -> " + stateStrings[currState];
                 // Show output
                 runOnUiThread(new Runnable() {
                     @Override
@@ -506,12 +410,6 @@ public class MainActivity extends Activity {
         mReaderSpinner = findViewById(R.id.main_spinner_reader);
         mReaderSpinner.setAdapter(mReaderAdapter);
 
-        // Initialize slot spinner
-        mSlotAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item);
-        mSlotSpinner = findViewById(R.id.main_spinner_slot);
-        mSlotSpinner.setAdapter(mSlotAdapter);
-
         // Initialize power spinner
         ArrayAdapter<String> powerAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, powerActionStrings);
@@ -525,7 +423,6 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-
                 mReaderAdapter.clear();
                 for (UsbDevice device : mManager.getDeviceList().values()) {
                     if (mReader.isSupported(device)) {
@@ -552,17 +449,13 @@ public class MainActivity extends Activity {
                         // If device name is found
                         if (deviceName.equals(device.getDeviceName())) {
                             // Request permission
-                            mManager.requestPermission(device,
-                                    mPermissionIntent);
+                            mManager.requestPermission(device, mPermissionIntent);
                             requested = true;
                             break;
                         }
                     }
                 }
-
                 if (!requested) {
-
-                    // Enable open button
                     mOpenButton.setEnabled(true);
                 }
             }
@@ -575,41 +468,11 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 setButtons(false);
-                mSlotAdapter.clear();
                 logMsg("Closing reader...");
                 new CloseTask().execute();
             }
         });
 
-        // Initialize get state button
-        mGetStateButton = findViewById(R.id.main_button_get_state);
-        mGetStateButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                // Get slot number
-                int slotNum = mSlotSpinner.getSelectedItemPosition();
-                // If slot is selected
-                if (slotNum != Spinner.INVALID_POSITION) {
-
-                    try {
-                        // Get state
-                        logMsg("Slot " + slotNum + ": Getting state...");
-                        int state = mReader.getState(slotNum);
-
-                        if (state < Reader.CARD_UNKNOWN
-                                || state > Reader.CARD_SPECIFIC) {
-                            state = Reader.CARD_UNKNOWN;
-                        }
-                        logMsg("State: " + stateStrings[state]);
-                    } catch (IllegalArgumentException e) {
-
-                        logMsg(e.toString());
-                    }
-                }
-            }
-        });
 
         // Initialize power button
         mPowerButton = findViewById(R.id.main_button_power);
@@ -618,38 +481,32 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                // Get slot number
-                int slotNum = mSlotSpinner.getSelectedItemPosition();
                 // Get action number
                 int actionNum = mPowerSpinner.getSelectedItemPosition();
-                // If slot and action are selected
-                if (slotNum != Spinner.INVALID_POSITION
-                        && actionNum != Spinner.INVALID_POSITION) {
-
-                    if (actionNum < Reader.CARD_POWER_DOWN
-                            || actionNum > Reader.CARD_WARM_RESET) {
+                // If action is selected
+                if (actionNum != Spinner.INVALID_POSITION) {
+                    if (actionNum < Reader.CARD_POWER_DOWN || actionNum > Reader.CARD_WARM_RESET) {
                         actionNum = Reader.CARD_WARM_RESET;
                     }
 
                     // Set parameters
                     PowerParams params = new PowerParams();
-                    params.slotNum = slotNum;
+                    params.slotNum = 0;
                     params.action = actionNum;
 
                     // Perform power action
-                    logMsg("Slot " + slotNum + ": "
-                            + powerActionStrings[actionNum] + "...");
+                    logMsg("Slot 0 : " + powerActionStrings[actionNum] + "...");
                     new PowerTask().execute(params);
 
+                    //Automatically set protocol to 1 (due to mifare class1k and ultralight)
                     int preferredProtocols = Reader.PROTOCOL_T1;
                     String preferredProtocolsString = "T=1";
 
 
                     SetProtocolParams params2 = new SetProtocolParams();
-                    params2.slotNum = slotNum;
+                    params2.slotNum = 0;
                     params2.preferredProtocols = preferredProtocols;
-
-                    logMsg("Slot " + slotNum + ": Setting protocol to " + preferredProtocolsString + "...");
+                    logMsg("Slot 0 :  Setting protocol to " + preferredProtocolsString + "...");
                     new SetProtocolTask().execute(params2);
                 }
             }
@@ -657,116 +514,60 @@ public class MainActivity extends Activity {
 
         // Initialize command edit text
         mCommandEditText = findViewById(R.id.main_edit_text_command);
-
         // Initialize transmit button
         mTransmitButton = findViewById(R.id.main_button_transmit);
         mTransmitButton.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
+                TransmitParams params = new TransmitParams();
+                params.slotNum = 0;
+                params.controlCode = -1;
+                params.commandString = mCommandEditText.getText().toString();
+                logMsg("Slot 0 : Transmitting APDU...");
+                new TransmitTask().execute(params);
+            }
+        });
 
-                // Get slot number
-                int slotNum = mSlotSpinner.getSelectedItemPosition();
-                // If slot is selected
-                if (slotNum != Spinner.INVALID_POSITION) {
-                    // Set parameters
-                    TransmitParams params = new TransmitParams();
-                    params.slotNum = slotNum;
-                    params.controlCode = -1;
-                    params.commandString = mCommandEditText.getText().toString();
-                    // Transmit APDU
-                    logMsg("Slot " + slotNum + ": Transmitting APDU...");
+        //Initialize ReadTag button
+        mReadTagButton = findViewById(R.id.main_button_ReadTag);
+        mReadTagButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logMsg("Processing Read command : please wait ...\n");
+                TransmitParams params = new TransmitParams();
+                params.controlCode = -1;
+
+                //Lire 4 pages par 4 pages (ont peut pas plus apparemment)
+                String[] arr={"04","08", "0C"};
+                for (String i:arr){
+                    logMsg("Processing reading, please wait : " + i);
+                    params.commandString = "FF B0 00 "+ i + " 10";
                     new TransmitTask().execute(params);
                 }
             }
         });
-
-        // Initialize control edit text
-        mControlEditText = findViewById(R.id.main_edit_text_control);
-        mControlEditText.setText(Integer.toString(Reader.IOCTL_CCID_ESCAPE));
-
-        // Initialize control button
-        mControlButton = findViewById(R.id.main_button_control);
-        mControlButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                // Get slot number
-                int slotNum = mSlotSpinner.getSelectedItemPosition();
-                // If slot is selected
-                if (slotNum != Spinner.INVALID_POSITION) {
-                    // Get control code
-                    int controlCode;
-                    try {
-                        controlCode = Integer.parseInt(mControlEditText.getText().toString());
-
-                    } catch (NumberFormatException e) {
-                        controlCode = Reader.IOCTL_CCID_ESCAPE;
-                    }
-
-                    // Set parameters
-                    TransmitParams params = new TransmitParams();
-                    params.slotNum = slotNum;
-                    params.controlCode = controlCode;
-                    params.commandString = mCommandEditText.getText().toString();
-
-                    // Transmit control command
-                    logMsg("Slot " + slotNum + ": Transmitting control command (Control Code: "
-                            + params.controlCode + ")...");
-                    new TransmitTask().execute(params);
-                }
-            }
-        });
-
-        // Initialize get features button
-        mGetFeaturesButton = findViewById(R.id.main_button_get_features);
-        mGetFeaturesButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                // Get slot number
-                int slotNum = mSlotSpinner.getSelectedItemPosition();
-                // If slot is selected
-                if (slotNum != Spinner.INVALID_POSITION) {
-                    // Set parameters
-                    TransmitParams params = new TransmitParams();
-                    params.slotNum = slotNum;
-                    params.controlCode = Reader.IOCTL_GET_FEATURE_REQUEST;
-                    params.commandString = "";
-
-                    // Transmit control command
-                    logMsg("Slot " + slotNum + ": Getting features (Control Code: "
-                            + params.controlCode + ")...");
-                    new TransmitTask().execute(params);
-                }
-            }
-        });
-
         setButtons(false);
         // Hide input window
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
+
+
+
+
 
     @Override
     protected void onDestroy() {
-        // Close reader
         mReader.close();
-        // Unregister receiver
         unregisterReceiver(mReceiver);
         super.onDestroy();
     }
 
 
 
-    /**
-     * Logs the message.
-     * 
-     * @param msg
-     *            the message.
-     */
+
+
+
+    // Display the message
     private void logMsg(String msg) {
 
         DateFormat dateFormat = new SimpleDateFormat("[dd-MM-yyyy HH:mm:ss]: ");
@@ -781,36 +582,26 @@ public class MainActivity extends Activity {
         }
     }
 
-    /**
-     * Logs the contents of buffer.
-     * 
-     * @param buffer
-     *            the buffer.
-     * @param bufferLength
-     *            the buffer length.
-     */
+
+
+
+
+//Display the content of the buffer
     private void logBuffer(byte[] buffer, int bufferLength) {
-
         StringBuilder bufferString = new StringBuilder();
-
         for (int i = 0; i < bufferLength; i++) {
-
             String hexChar = Integer.toHexString(buffer[i] & 0xFF);
             if (hexChar.length() == 1) {
                 hexChar = "0" + hexChar;
             }
-
             if (i % 16 == 0) {
-
                 if (!bufferString.toString().equals("")) {
-
                     logMsg(bufferString.toString());
                     bufferString = new StringBuilder();
                 }
             }
             bufferString.append(hexChar.toUpperCase()).append(" ");
         }
-
         if (!bufferString.toString().equals("")) {
             logMsg(bufferString.toString());
         }
@@ -818,14 +609,13 @@ public class MainActivity extends Activity {
 
 
 
+
+
     private void setButtons(boolean bool){
         mCloseButton.setEnabled(bool);
-        mSlotSpinner.setEnabled(bool);
-        mGetStateButton.setEnabled(bool);
         mPowerSpinner.setEnabled(bool);
         mPowerButton.setEnabled(bool);
         mTransmitButton.setEnabled(bool);
-        mControlButton.setEnabled(bool);
-        mGetFeaturesButton.setEnabled(bool);
+        mReadTagButton.setEnabled(bool);
     }
 }

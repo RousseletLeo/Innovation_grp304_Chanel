@@ -2,21 +2,18 @@
 <resources>
 
     <string name="app_name">ACR122U_ESME</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Paramètres</string>
     <string name="reader">Lecteurs connectés :</string>
     <string name="list">Rechercher</string>
-    <string name="informations_lecteur">Informations lecteur :</string>
-    <string name="get_state">Etat du lecteur</string>
     <string name="open">Ouvrir</string>
     <string name="close">Fermer</string>
     <string name="power_action">Protocole de démarrage :</string>
     <string name="power">Démarrer</string>
     <string name="get_protocol">Get Protocole</string>
     <string name="transmit_control">Commandes :</string>
-    <string name="transmit">Transmettre</string>
-    <string name="control">Contrôler, code : </string>
+    <string name="transmit">Transmettre APDU</string>
     <string name="secure_pin_entry">Secure PIN Entry:</string>
-    <string name="get_features">Fonctionnalités</string>
     <string name="enter_apdu_here">Entrer APDU : FF B0 00 04 10</string>
+    <string name="ReadTag">Lecture</string>
 
 </resources>
