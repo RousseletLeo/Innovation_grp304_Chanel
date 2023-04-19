@@ -20,6 +20,8 @@ import android.hardware.usb.UsbManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -28,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.acs.smartcard.Features;
@@ -96,7 +99,29 @@ public class MainActivity extends Activity {
     private final Features mFeatures = new Features();
 
     /*Code de Krissou*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_developpers_mode:
+                //dev_mode(); <-- Léo je te laisse faire le code brut et je m'occupe de la mise en beauté;)
+                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur mode développeur", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_settings:
+                //settings(); <-- Idem ;)
+                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur les paramètres", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     /*Code de Krissou*/
 
 
