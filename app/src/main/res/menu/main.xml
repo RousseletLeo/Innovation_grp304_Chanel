@@ -1,17 +1,18 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
         android:id="@+id/action_developpers_mode"
-        android:showAsAction="always"
         android:title="@string/action_developpers_mode"
-        android:icon="@drawable/ic_dev_mod" />
+        android:icon="@drawable/ic_dev_mod"
+        app:showAsAction="ifRoom" />
 <!--        android:onClick="method_dev" -->
 
     <item
         android:id="@+id/action_settings"
-        android:showAsAction="ifRoom"
         android:title="@string/action_settings"
-        android:icon="@drawable/ic_settings" />
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="ifRoom" />
 <!--        android:onClick="method_settings"-->
 
 

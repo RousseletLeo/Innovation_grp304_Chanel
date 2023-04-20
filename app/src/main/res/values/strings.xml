@@ -19,6 +19,11 @@
     <string name="secure_pin_entry">Secure PIN Entry:</string>
     <string name="get_features">Fonctionnalités</string>
     <string name="enter_apdu_here">Entrer APDU : FF B0 00 04 10</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="action_dev_mode">Mode développeur</string>
+    <string name="action_user_mode">Mode simple</string>
 
 
 </resources>
