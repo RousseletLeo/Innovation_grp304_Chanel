@@ -15,5 +15,6 @@
     <string name="secure_pin_entry">Secure PIN Entry:</string>
     <string name="enter_apdu_here">Entrer APDU : FF B0 00 04 10</string>
     <string name="ReadTag">Lecture</string>
+    <string name="WriteTag">Ecrire</string>
 
 </resources>

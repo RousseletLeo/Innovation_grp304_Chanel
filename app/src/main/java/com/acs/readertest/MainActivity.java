@@ -1,15 +1,20 @@
 package com.acs.readertest;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -58,7 +63,11 @@ public class MainActivity extends Activity {
     private EditText mCommandEditText;
     private Button mTransmitButton;
     private Button mReadTagButton;
+    private Button mWriteTagButton;
     private final Features mFeatures = new Features();
+    private String typeOfCard = "";
+    private String m_Text;
+
 
     //Check la connection USB avec le lecteur, et l'autorisation à utiliser le lecteur.
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -183,6 +192,7 @@ public class MainActivity extends Activity {
             PowerResult result = new PowerResult();
             try {
                 result.atr = mReader.power(params[0].slotNum, params[0].action);
+
             } catch (Exception e) {
                 result.e = e;
             }
@@ -195,10 +205,20 @@ public class MainActivity extends Activity {
             if (result.e != null) {
                 logMsg(result.e.toString());
             } else {
-                // Show ATR : ultralight ou class1k
                 if (result.atr != null) {
                     logMsg("ATR:");
-                    logBuffer(result.atr, result.atr.length);
+                    String stringAtr = logBuffer(result.atr, result.atr.length);
+
+                    if(stringAtr.equals("3B 8F 80 01 80 4F 0C A0 00 00 03 06 03 00 01 00 00 00 00 6A ")){
+                        typeOfCard = "Mifare classic 1k";
+                    }else if(stringAtr.equals("3B 8F 80 01 80 4F 0C A0 00 00 03 06 03 00 03 00 00 00 00 68 ")){
+                        typeOfCard = "Mifare Ultralight";
+                    }
+                    else {
+                        typeOfCard = "Unknown";
+                    }
+                    logMsg(typeOfCard);
+
                 } else {
                     logMsg("ATR: None");
                 }
@@ -349,6 +369,7 @@ public class MainActivity extends Activity {
 
 
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     //Initialisation des composants au lancement de l'appli
     public void onCreate(Bundle savedInstanceState) {
@@ -387,7 +408,7 @@ public class MainActivity extends Activity {
 
         // Register receiver for USB permission
         mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(
-                ACTION_USB_PERMISSION), 0);
+                ACTION_USB_PERMISSION), PendingIntent.FLAG_UPDATE_CURRENT);
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_USB_PERMISSION);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
@@ -537,15 +558,60 @@ public class MainActivity extends Activity {
                 TransmitParams params = new TransmitParams();
                 params.controlCode = -1;
 
-                //Lire 4 pages par 4 pages (ont peut pas plus apparemment)
-                String[] arr={"04","08", "0C"};
+                //Number of the pages we want to read
+                String[] arr = {};
+
+                if (typeOfCard.equals("Mifare Ultralight")){
+                    //Read 4 pages by 4 pages (it seems to be impossible to do more in one command)
+                    arr= new String[]{"04","08", "0C"};
+                }else if (typeOfCard.equals("Mifare classic 1k")){
+                    arr= new String[]{"04"};
+                }
+
+                logMsg("Informations mémoires : ");
                 for (String i:arr){
-                    logMsg("Processing reading, please wait : " + i);
+                    logMsg("Processing reading : " + i);
                     params.commandString = "FF B0 00 "+ i + " 10";
                     new TransmitTask().execute(params);
                 }
             }
         });
+
+        mWriteTagButton = findViewById(R.id.main_button_WriteTag);
+
+        mWriteTagButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Ecriture mémoire");
+                builder.setMessage("Quel est le message que vous voulez écrire dans la mémoire ? ");
+
+                // Set up the input
+                final EditText input = new EditText(MainActivity.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        m_Text = input.getText().toString();
+                        String textParsed = NfcUtils.parseText(m_Text);
+                        logMsg("Votre message à bien été enregistré : ");
+                        logMsg(m_Text);
+                        logMsg(textParsed);
+                    }
+                });
+                builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
+
         setButtons(false);
         // Hide input window
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -568,7 +634,7 @@ public class MainActivity extends Activity {
 
 
     // Display the message
-    private void logMsg(String msg) {
+    public void logMsg(String msg) {
 
         DateFormat dateFormat = new SimpleDateFormat("[dd-MM-yyyy HH:mm:ss]: ");
         Date date = new Date();
@@ -587,8 +653,9 @@ public class MainActivity extends Activity {
 
 
 //Display the content of the buffer
-    private void logBuffer(byte[] buffer, int bufferLength) {
+    private String logBuffer(byte[] buffer, int bufferLength) {
         StringBuilder bufferString = new StringBuilder();
+        String completeBufferString = "";
         for (int i = 0; i < bufferLength; i++) {
             String hexChar = Integer.toHexString(buffer[i] & 0xFF);
             if (hexChar.length() == 1) {
@@ -597,6 +664,7 @@ public class MainActivity extends Activity {
             if (i % 16 == 0) {
                 if (!bufferString.toString().equals("")) {
                     logMsg(bufferString.toString());
+                    completeBufferString = bufferString.toString();
                     bufferString = new StringBuilder();
                 }
             }
@@ -605,6 +673,8 @@ public class MainActivity extends Activity {
         if (!bufferString.toString().equals("")) {
             logMsg(bufferString.toString());
         }
+        completeBufferString = completeBufferString + bufferString;
+        return completeBufferString;
     }
 
 
@@ -617,5 +687,6 @@ public class MainActivity extends Activity {
         mPowerButton.setEnabled(bool);
         mTransmitButton.setEnabled(bool);
         mReadTagButton.setEnabled(bool);
+        mWriteTagButton.setEnabled(bool);
     }
 }
