@@ -110,8 +110,8 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.action_developpers_mode:
-                //dev_mode(); <-- Léo je te laisse faire le code brut et je m'occupe de la mise en beauté;)
+            case R.id.action_dev_mode:
+                //dev_mode(); <-- A FAIRE !!!
                 Toast.makeText(getApplicationContext(),"Vous avez cliqué sur mode développeur", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_settings:
