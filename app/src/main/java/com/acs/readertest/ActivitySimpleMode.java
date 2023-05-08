@@ -30,7 +30,7 @@ public class ActivitySimpleMode extends Activity {
         detailsButton = findViewById(details_button);
 
         // Condition à vérifier
-        condition = true; // Mettre à false pour tester la croix rouge
+        condition = false; // Mettre à false pour tester la croix rouge
 
         // Affichage du check ou de la croix rouge
         if (condition) {
