@@ -19,6 +19,8 @@
     <string name="secure_pin_entry">Secure PIN Entry:</string>
     <string name="get_features">Fonctionnalités</string>
     <string name="enter_apdu_here">Entrer APDU : FF B0 00 04 10</string>
-
+    <string name="ReadTag">Lire</string>
+    <string name="WriteTag">Ecrire</string>
+    <string name="action_simple_mode">Mode simplifié</string>
 
 </resources>

@@ -17,13 +17,13 @@ public class ActivityPageAccueil extends Activity {
     }
 
     public void launchMainActivity(View view) {
-        Log.d(LOG_TAG, "Boutton cliqué !");
+        Log.d(LOG_TAG, "Boutton mode dev cliqué !");
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     public void launchActivitySimpleMode(View view) {
-        Log.d(LOG_TAG_2, "Boutton cliqué !");
+        Log.d(LOG_TAG_2, "Boutton mode simple cliqué !");
         Intent intent2 = new Intent(this, ActivitySimpleMode.class);
         startActivity(intent2);
     }

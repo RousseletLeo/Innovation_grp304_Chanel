@@ -3,32 +3,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="289dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="39dp"
-        android:src="@mipmap/ic_launcher_round" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/modesimpleButton"
-        android:layout_width="201dp"
-        android:layout_height="97dp"
-        android:layout_below="@id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp"
-        android:text="Mode simplifié"
-        android:onClick="launchActivitySimpleMode"/>
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="414dp"
+            android:layout_height="317dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="0dp"
+            android:src="@mipmap/ic_launcher_round" />
 
-    <Button
-        android:id="@+id/modedevButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/modesimpleButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="153dp"
-        android:text="Mode développeur"
-        android:onClick="launchMainActivity" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:baselineAligned="false">
+
+            <Button
+                android:id="@+id/modesimpleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="40dp"
+                android:onClick="launchActivitySimpleMode"
+                android:text="Mode simplifié" />
+
+            <Button
+                android:id="@+id/modedevButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="30dp"
+                android:onClick="launchMainActivity"
+                android:text="Mode développeur" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
