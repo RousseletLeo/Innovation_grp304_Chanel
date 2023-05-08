@@ -12,12 +12,23 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ActivityHelp"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityCarte"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityLecteur"
+            android:exported="false" />
+        <activity
             android:name=".ActivitySettings"
             android:exported="false"
-            android:parentActivityName=".ActivitySimpleMode"/>
+            android:parentActivityName=".ActivitySimpleMode" />
+
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.acs.readertest.ActivitySettings" />
+
         <activity
             android:name=".ActivityPageAccueil"
             android:exported="true">

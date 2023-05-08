@@ -8,5 +8,6 @@
     <color name="noir">#000000</color>
     <color name="blanc">#FFFFFF</color>
     <color name="jaune">#FFEB3B</color>
+    <color name="gris">#8c8c8c</color>
 
 </resources>

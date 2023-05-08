@@ -17,13 +17,13 @@ public class ActivityPageAccueil extends Activity {
     }
 
     public void launchMainActivity(View view) {
-        Log.d(LOG_TAG, "Boutton mode dev cliqué !");
+        Log.d(LOG_TAG, "Mode avancé lancé !");
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     public void launchActivitySimpleMode(View view) {
-        Log.d(LOG_TAG_2, "Boutton mode simple cliqué !");
+        Log.d(LOG_TAG_2, "Bienvenue dans CHANEL Companion !");
         Intent intent2 = new Intent(this, ActivitySimpleMode.class);
         startActivity(intent2);
     }

@@ -85,8 +85,8 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.action_developpers_mode:
-                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur mode développeur", Toast.LENGTH_SHORT).show();
+            case R.id.imageView:
+                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur mode avancé", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 return true;

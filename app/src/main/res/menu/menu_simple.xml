@@ -2,18 +2,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_simple_mode"
-        android:title="@string/action_simple_mode"
-        android:icon="@drawable/ic_action_simple_mode"
-        app:showAsAction="ifRoom" />
-    <!--        android:onClick="method_simple_mode" -->
-
-    <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:icon="@drawable/ic_settings"
         app:showAsAction="always" />
-    <!--        android:onClick="method_settings"-->
 
+    <item
+        android:id="@+id/action_help"
+        android:title="@string/action_help"
+        android:icon="@drawable/ic_help"
+        app:showAsAction="ifRoom" />
 
 </menu>
