@@ -1,5 +1,8 @@
 package com.acs.readertest;
 
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+
 public class NfcUtils {
 
     //Récupérer l'ATR pour avoir le type de carte
@@ -13,11 +16,6 @@ public class NfcUtils {
 
 
 
-    public String readTag(String hexStartPage, String hexNumberBytes ){
-        return "FF B0 00" + hexStartPage + hexNumberBytes;
-    }
-
-
 
 
     //Pour l'instant gère que les Mifare Ultralight
@@ -28,10 +26,25 @@ public class NfcUtils {
 
 
 
-    //Vérifier/Créer la structure des messages hexa écrit en mémoire.
-    //Nous servira à différencier différentes infos dans une même carte
-    public String parseMemory(){
-        return "";
+    //Formatage en NDefMessage
+    public static String parseText(String text){
+
+        //Création d'un NDefMessage à partir d'un texte
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            NdefRecord textRecord = NdefRecord.createTextRecord("en",text);
+            NdefMessage textMessage = new NdefMessage(textRecord);
+            String hexStringTextMessage = NfcUtils.toHexString(textMessage.toByteArray());
+
+            //Ajouter TLV
+            if(text.length()>0){
+                String StringTLVstart = "03 ";
+                String StringTLVTerminator = "FE";
+                int TLVLenght = textMessage.getByteArrayLength();
+                String StringTLVLenght = NfcUtils.toHexString(TLVLenght);
+                return StringTLVstart + StringTLVLenght + " " + hexStringTextMessage + StringTLVTerminator;
+            }
+        }
+        return null;
     }
 
 
