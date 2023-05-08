@@ -1,6 +1,7 @@
 package com.acs.readertest;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +34,8 @@ public class ActivitySimpleMode extends Activity {
             case R.id.action_settings:
                 //settings();
                 Toast.makeText(getApplicationContext(),"Vous avez cliqué sur les paramètres", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(this, ActivitySettings.class);
+                startActivity(intent2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

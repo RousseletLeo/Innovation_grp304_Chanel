@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -85,17 +86,21 @@ public class MainActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_developpers_mode:
-                //dev_mode();
                 Toast.makeText(getApplicationContext(),"Vous avez cliqué sur mode développeur", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.action_settings:
                 //settings();
                 Toast.makeText(getApplicationContext(),"Vous avez cliqué sur les paramètres", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(this, ActivitySettings.class);
+                startActivity(intent2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
     /*Code de Krissou*/
 
 
@@ -143,11 +148,6 @@ public class MainActivity extends Activity {
             }
         }
     };
-
-
-
-
-
 
     //Ouvrir l'accès au lecteur
     private class OpenTask extends AsyncTask<UsbDevice, Void, Exception> {

@@ -22,5 +22,10 @@
     <string name="ReadTag">Lire</string>
     <string name="WriteTag">Ecrire</string>
     <string name="action_simple_mode">Mode simplifié</string>
+    <string name="parametres">Paramètres</string>
+    <string name="langue">Langue</string>
+    <string name="theme">Thème</string>
+    <string name="notifications">Notifications</string>
+    <string name="sauvegarder">Sauvegarder</string>
 
 </resources>

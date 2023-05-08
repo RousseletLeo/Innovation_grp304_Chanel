@@ -5,7 +5,7 @@
         android:id="@+id/action_developpers_mode"
         android:title="@string/action_developpers_mode"
         android:icon="@drawable/ic_dev_mod"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 <!--        android:onClick="method_dev" -->
 
     <item
@@ -13,7 +13,6 @@
         android:title="@string/action_settings"
         android:icon="@drawable/ic_settings"
         app:showAsAction="always" />
-<!--        android:onClick="method_settings"-->
 
 
 </menu>
