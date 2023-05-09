@@ -50,13 +50,6 @@ public class NfcUtils {
 
 
 
-    //Définis les clefs d'authentification (et leurs autorisations) d'une Mifare Classic 1k
-    //Clef A : lecture    clef B : écriture
-    public void loadKeys(){
-
-    }
-
-
 
 
 

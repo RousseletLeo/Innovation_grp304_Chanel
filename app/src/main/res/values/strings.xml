@@ -16,5 +16,7 @@
     <string name="enter_apdu_here">Entrer APDU : FF B0 00 04 10</string>
     <string name="ReadTag">Lecture</string>
     <string name="WriteTag">Ecrire</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

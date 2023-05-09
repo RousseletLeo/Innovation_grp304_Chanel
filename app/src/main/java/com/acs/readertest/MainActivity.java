@@ -127,6 +127,7 @@ public class MainActivity extends Activity {
             Exception result = null;
             try {
                 mReader.open(params[0]);
+
             } catch (Exception e) {
                 result = e;
             }
@@ -312,8 +313,7 @@ public class MainActivity extends Activity {
                     command = NfcUtils.toByteArray(params[0].commandString.substring(
                             startIndex, foundIndex));
                 } else {
-                    command = NfcUtils.toByteArray(params[0].commandString
-                            .substring(startIndex));
+                    command = NfcUtils.toByteArray(params[0].commandString.substring(startIndex));
                 }
 
                 // Set next start index
@@ -322,7 +322,6 @@ public class MainActivity extends Activity {
                 progress = new TransmitProgress();
                 progress.controlCode = params[0].controlCode;
                 try {
-
                     if (params[0].controlCode < 0) {
                         // Transmit APDU
                         responseLength = mReader.transmit(params[0].slotNum,
@@ -533,6 +532,7 @@ public class MainActivity extends Activity {
             }
         });
 
+
         // Initialize command edit text
         mCommandEditText = findViewById(R.id.main_edit_text_command);
         // Initialize transmit button
@@ -558,27 +558,34 @@ public class MainActivity extends Activity {
                 TransmitParams params = new TransmitParams();
                 params.controlCode = -1;
 
-                //Number of the pages we want to read
-                String[] arr = {};
+                //Number of pages we want to read
+                String[] arr;
+                logMsg("Informations mémoires : ");
 
                 if (typeOfCard.equals("Mifare Ultralight")){
                     //Read 4 pages by 4 pages (it seems to be impossible to do more in one command)
                     arr= new String[]{"04","08", "0C"};
-                }else if (typeOfCard.equals("Mifare classic 1k")){
-                    arr= new String[]{"04"};
-                }
+                    for (String i:arr) {
+                        logMsg("Processing reading : " + i);
+                        params.commandString = "FF B0 00 " + i + " 10";
+                        new TransmitTask().execute(params);
+                    }
 
-                logMsg("Informations mémoires : ");
-                for (String i:arr){
-                    logMsg("Processing reading : " + i);
-                    params.commandString = "FF B0 00 "+ i + " 10";
-                    new TransmitTask().execute(params);
+                }else if (typeOfCard.equals("Mifare classic 1k")){
+                    // keyType 60 = key A, read-only | keyType 61 = key B, write only
+                    arr = new String[]{"00","04","08","0C","10","14","18","1C","20","24",
+                            "28","2C","30","34","38","3C"};
+                    for (String i:arr){
+                        loadKeys(i,"60","00");
+                        logMsg("Processing reading : " + i);
+                        params.commandString = "FF B0 00 "+ i + " 10";
+                        new TransmitTask().execute(params);
+                    }
                 }
             }
         });
 
         mWriteTagButton = findViewById(R.id.main_button_WriteTag);
-
         mWriteTagButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -615,6 +622,7 @@ public class MainActivity extends Activity {
         setButtons(false);
         // Hide input window
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
     }
 
 
@@ -675,6 +683,19 @@ public class MainActivity extends Activity {
         }
         completeBufferString = completeBufferString + bufferString;
         return completeBufferString;
+    }
+
+
+
+    //Définis les clefs d'authentification (et leurs autorisations) d'une Mifare Classic 1k
+    //Clef A : lecture    clef B : écriture
+    public void loadKeys(String loadedSector, String keyType, String keyNumber){
+        TransmitParams login = new TransmitParams();
+        login.slotNum = 0;
+        login.controlCode = -1;
+        login.commandString = "FF 86 00 00 05 01 00 " + loadedSector + keyType + keyNumber;
+        logMsg("Sector " + loadedSector + " loaded.");
+        new TransmitTask().execute(login);
     }
 
 
