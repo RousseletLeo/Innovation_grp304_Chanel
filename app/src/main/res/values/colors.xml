@@ -9,5 +9,8 @@
     <color name="blanc">#FFFFFF</color>
     <color name="jaune">#FFEB3B</color>
     <color name="gris">#8c8c8c</color>
-
+    <color name="light_blue_600">#d90000</color>
+    <color name="light_blue_A200">#d90000</color>
+    <color name="light_blue_900">#d90000</color>
+    <color name="light_blue_A400">#d90000</color>
 </resources>
