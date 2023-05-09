@@ -43,6 +43,11 @@ import java.util.Date;
  * @version 0.1 13/01/2023
  */
 
+
+
+//VERSION MERGE
+
+
 public class MainActivity extends Activity {
 
     static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
