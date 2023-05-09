@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="rouge">#d90000</color>
+    <color name="vert">#66bb6a</color>
+    <color name="bleu">#1b76ff</color>
+    <color name="violet_clair">#9250bc</color>
+    <color name="violet_dark">#732dd9</color>
+    <color name="noir">#000000</color>
+    <color name="blanc">#FFFFFF</color>
+    <color name="jaune">#FFEB3B</color>
+    <color name="gris">#8c8c8c</color>
+    <color name="light_blue_600">#d90000</color>
+    <color name="light_blue_A200">#d90000</color>
+    <color name="light_blue_900">#d90000</color>
+    <color name="light_blue_A400">#d90000</color>
+</resources>

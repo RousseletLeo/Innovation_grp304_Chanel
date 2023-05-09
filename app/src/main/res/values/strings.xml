@@ -3,8 +3,11 @@
 
     <string name="app_name">ACR122U_ESME</string>
     <string name="action_settings">Paramètres</string>
+    <string name="action_developpers_mode">Mode dév.</string>
     <string name="reader">Lecteurs connectés :</string>
     <string name="list">Rechercher</string>
+    <string name="informations_lecteur">Informations lecteur :</string>
+    <string name="get_state">Etat du lecteur</string>
     <string name="open">Ouvrir</string>
     <string name="close">Fermer</string>
     <string name="power_action">Protocole de démarrage :</string>
@@ -13,10 +16,25 @@
     <string name="transmit_control">Commandes :</string>
     <string name="transmit">Transmettre APDU</string>
     <string name="secure_pin_entry">Secure PIN Entry:</string>
+    <string name="get_features">Fonctionnalités</string>
     <string name="enter_apdu_here">Entrer APDU : FF B0 00 04 10</string>
-    <string name="ReadTag">Lecture</string>
+    <string name="ReadTag">Lire</string>
     <string name="WriteTag">Ecrire</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_simple_mode">Mode simplifié</string>
+    <string name="parametres">Paramètres</string>
+    <string name="langue">Langue</string>
+    <string name="theme">Thème</string>
+    <string name="notifications">Notifications</string>
+    <string name="sauvegarder">Sauvegarder</string>
+    <string name="veuillez_scanner_une_carte">Veuillez scanner une carte...</string>
+    <string name="veuillez_brancher_le_lecteur">Veuillez brancher le lecteur...</string>
+    <string name="action_help">Besoin d\'aide ?</string>
+    <string name="help_title">Besoin d\'aide ?
+Vous êtes au bon endroit !</string>
+    <string name="help_content">Bienvenue dans la page d\'aide ! </string>
+    <string name="help_prob_tech">Si vous rencontrez un problème technique ou une erreur, merci de vous adresser à cette adresse mail-ci :</string>
+    <string name="help_share">N\'hésitez pas à partager l\'application autour de vous et à nous mettre 5 étoiles dans le Store ! :)</string>
+    <string name="email">chanel.companion@esme.fr</string>
+    <string name="dedicace">Application codée par Léo ROUSSELET, Coline CHEN et Kris PIGOT dans le cadre d\'un projet à l\'ESME.</string>
 
 </resources>

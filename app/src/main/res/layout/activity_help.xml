@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:id="@+id/linearLayout">
+
+    <TextView
+        android:id="@+id/help_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help_title"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        tools:layout_conversion_absoluteHeight="60dp"
+        tools:layout_editor_absoluteY="16dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_conversion_absoluteWidth="379dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="0dp"/>
+
+    <TextView
+        android:id="@+id/help_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help_content"
+        android:textSize="21sp"
+        tools:layout_conversion_absoluteHeight="22dp"
+        tools:layout_editor_absoluteY="92dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_conversion_absoluteWidth="379dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="0dp"/>
+
+    <TextView
+        android:id="@+id/help_prob_tech"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help_prob_tech"
+        android:textSize="16sp"
+        tools:layout_conversion_absoluteHeight="59dp"
+        tools:layout_editor_absoluteY="130dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_conversion_absoluteWidth="379dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="0dp"/>
+
+    <TextView
+        android:id="@+id/help_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        android:textSize="16sp"
+        android:textColor="@color/bleu"
+        tools:layout_conversion_absoluteHeight="22dp"
+        tools:layout_editor_absoluteY="205dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_conversion_absoluteWidth="379dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="0dp" />
+
+    <TextView
+        android:id="@+id/help_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help_share"
+        android:textSize="16sp"
+        tools:layout_conversion_absoluteHeight="40dp"
+        tools:layout_editor_absoluteY="242dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_conversion_absoluteWidth="379dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="0dp"/>
+
+    <TextView
+        android:id="@+id/dedicace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dedicace"
+        android:textSize="12sp"
+        tools:layout_conversion_absoluteHeight="211dp"
+        tools:layout_editor_absoluteY="383dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_conversion_absoluteWidth="379dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginRight="0dp"
+        android:textColor="@color/gris"/>
+
+</LinearLayout>

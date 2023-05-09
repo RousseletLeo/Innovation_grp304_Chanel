@@ -16,6 +16,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -24,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.acs.smartcard.Features;
 import com.acs.smartcard.Reader;
@@ -36,13 +39,13 @@ import java.util.Date;
 /**
  * Read and write Mifare ultralight and Mifare Classik 1k program for ACR122U reader
  *
- * @author Rousselet Léo, Pigot Kris, Chen Coline ESME
+ * @author Rousselet Léo, Pigot Kris, Chen Coline, ESME
  * @version 0.1 13/01/2023
  */
 
 public class MainActivity extends Activity {
 
-    private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
+    static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
 
     private static final String[] powerActionStrings = { "Power Down", "Cold Reset", "Warm Reset" };
 
@@ -50,7 +53,7 @@ public class MainActivity extends Activity {
             "Swallowed", "Powered", "Negotiable", "Specific" };
 
     private UsbManager mManager;
-    private Reader mReader;
+    private static Reader mReader;
     private PendingIntent mPermissionIntent;
     private static final int MAX_LINES = 25;
     private TextView mResponseTextView;
@@ -64,9 +67,40 @@ public class MainActivity extends Activity {
     private Button mTransmitButton;
     private Button mReadTagButton;
     private Button mWriteTagButton;
-    private final Features mFeatures = new Features();
+    private static final Features mFeatures = new Features();
     private String typeOfCard = "";
     private String m_Text;
+
+    /*Code de Krissou*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.imageView:
+                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur mode avancé", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_settings:
+                //settings();
+                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur les paramètres", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(this, ActivitySettings.class);
+                startActivity(intent2);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /*Code de Krissou*/
+
 
 
     //Check la connection USB avec le lecteur, et l'autorisation à utiliser le lecteur.
@@ -91,7 +125,7 @@ public class MainActivity extends Activity {
                     }
                 }
             }
-            //Shut down le lecteur si déconecté du port USB
+            //Shut down le lecteur si déconnecté du port USB
             else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
 
                 synchronized (this) {
@@ -113,13 +147,8 @@ public class MainActivity extends Activity {
         }
     };
 
-
-
-
-
-
     //Ouvrir l'accès au lecteur
-    private class OpenTask extends AsyncTask<UsbDevice, Void, Exception> {
+    class OpenTask extends AsyncTask<UsbDevice, Void, Exception> {
 
         @Override
         //Ouvre le lecteur
@@ -157,7 +186,7 @@ public class MainActivity extends Activity {
 
 
     //Fermer l'accès au lecteur
-    private class CloseTask extends AsyncTask<Void, Void, Void> {
+    class CloseTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -710,4 +739,5 @@ public class MainActivity extends Activity {
         mReadTagButton.setEnabled(bool);
         mWriteTagButton.setEnabled(bool);
     }
+
 }
