@@ -9,6 +9,9 @@ import android.view.View;
 public class ActivityPageAccueil extends Activity {
     private static final String LOG_TAG =ActivityPageAccueil.class.getSimpleName();
     private static final String LOG_TAG_2 =ActivityPageAccueil.class.getSimpleName();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +27,9 @@ public class ActivityPageAccueil extends Activity {
 
     public void launchActivitySimpleMode(View view) {
         Log.d(LOG_TAG_2, "Bienvenue dans CHANEL Companion !");
-        Intent intent2 = new Intent(this, ActivitySimpleMode.class);
+        Intent intent2 = new Intent(this, ActivityLecteur.class);
         startActivity(intent2);
     }
+
+
 }

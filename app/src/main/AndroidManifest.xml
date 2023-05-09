@@ -14,18 +14,32 @@
         <activity
             android:name=".ActivityProfile"
             android:exported="false" />
+
         <activity
             android:name=".ActivityHelp"
             android:exported="false" />
+
         <activity
             android:name=".ActivityCarte"
-            android:exported="false" />
+            android:exported="true"
+            android:parentActivityName=".ActivityLecteur">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.acs.readertest.ActivityCarte" />
+        </activity>
+
         <activity
             android:name=".ActivityLecteur"
-            android:exported="false" />
+            android:exported="true"
+            android:parentActivityName=".ActivityPageAccueil">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.acs.readertest.ActivityLecteur" />
+        </activity>
+
         <activity
             android:name=".ActivitySettings"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".ActivitySimpleMode" />
 
         <meta-data
@@ -37,10 +51,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -49,6 +63,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.acs.readertest.MainActivity" />
         </activity>
+
         <activity
             android:name=".ActivitySimpleMode"
             android:exported="true"
