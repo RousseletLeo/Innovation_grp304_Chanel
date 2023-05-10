@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ACR122U_ESME</string>
+    <string name="app_name">CHANEL Companion</string>
     <string name="action_settings">Paramètres</string>
     <string name="action_developpers_mode">Mode dév.</string>
     <string name="reader">Lecteurs connectés :</string>
@@ -26,8 +26,8 @@
     <string name="theme">Thème</string>
     <string name="notifications">Notifications</string>
     <string name="sauvegarder">Sauvegarder</string>
-    <string name="veuillez_scanner_une_carte">Veuillez scanner une carte...</string>
-    <string name="veuillez_brancher_le_lecteur">Veuillez brancher le lecteur...</string>
+    <string name="veuillez_scanner_une_carte">Veuillez scanner une carte…</string>
+    <string name="veuillez_brancher_le_lecteur">Veuillez brancher le lecteur…</string>
     <string name="action_help">Besoin d\'aide ?</string>
     <string name="help_title">Besoin d\'aide ?
 Vous êtes au bon endroit !</string>

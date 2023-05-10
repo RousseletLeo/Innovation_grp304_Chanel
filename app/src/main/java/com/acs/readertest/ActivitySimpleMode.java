@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class ActivitySimpleMode extends Activity {
 
@@ -60,11 +59,6 @@ public class ActivitySimpleMode extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.action_simple_mode:
-                Toast.makeText(getApplicationContext(),"Vous êtes passé en mode simplifié", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, ActivitySimpleMode.class);
-                startActivity(intent);
-                return true;
             case R.id.action_settings:
                 Intent intent2 = new Intent(this, ActivitySettings.class);
                 startActivity(intent2);

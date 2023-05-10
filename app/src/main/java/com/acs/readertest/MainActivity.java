@@ -88,14 +88,19 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.imageView:
-                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur mode avancé", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, MainActivity.class);
+            case R.id.action_simple_mode:
+                //simple_mode
+                Toast.makeText(getApplicationContext(),"Vous vous trouvez en mode simplifié", Toast.LENGTH_SHORT).show();
+                Intent intent0 = new Intent(this, ActivityLecteur.class);
+                startActivity(intent0);
+                return true;
+            case R.id.action_help:
+                //besoin d'aide
+                Intent intent = new Intent(this, ActivityHelp.class);
                 startActivity(intent);
                 return true;
             case R.id.action_settings:
                 //settings();
-                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur les paramètres", Toast.LENGTH_SHORT).show();
                 Intent intent2 = new Intent(this, ActivitySettings.class);
                 startActivity(intent2);
                 return true;

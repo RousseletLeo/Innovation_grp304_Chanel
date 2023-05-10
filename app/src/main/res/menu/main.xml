@@ -1,6 +1,6 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
-
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:showAsAction="always" >
 
     <item
         android:id="@+id/action_simple_mode"
@@ -12,13 +12,12 @@
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:icon="@drawable/ic_settings"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_help"
         android:title="@string/action_help"
         android:icon="@drawable/ic_help"
         app:showAsAction="ifRoom" />
-
 
 </menu>
