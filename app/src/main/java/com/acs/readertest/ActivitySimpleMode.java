@@ -29,21 +29,23 @@ public class ActivitySimpleMode extends Activity {
         detailsButton = findViewById(details_button);
 
         // Condition à vérifier
-        condition = false; // Mettre à false pour tester la croix rouge
+        condition = true; // Mettre à false pour tester la croix rouge
 
         // Affichage du check ou de la croix rouge
         if (condition) {
             checkImage.setImageResource(R.drawable.ic_check);
         } else {
             checkImage.setImageResource(R.drawable.ic_error);
-            detailsButton.setVisibility(View.VISIBLE);
         }
+        detailsButton.setVisibility(View.VISIBLE);
 
         // Ajout d'un listener pour le bouton de détails
         detailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // AFFICHER LES DETAILS DES ERREURS
+                Intent intent32 = new Intent(ActivitySimpleMode.this, ActivityProfile.class);
+                startActivity(intent32);
             }
         });
     }

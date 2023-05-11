@@ -16,9 +16,5 @@ public class ActivitySettings extends Activity {
         setContentView(R.layout.activity_settings);
     }
 
-    public void launchActivitySettings(View view) {
-        Log.d(LOG_TAG, "Boutton des paramètres cliqué !");
-        Intent intent = new Intent(this, ActivitySettings.class);
-        startActivity(intent);
-    }
+
 }

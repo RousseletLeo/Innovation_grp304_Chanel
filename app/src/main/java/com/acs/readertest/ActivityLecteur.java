@@ -25,5 +25,6 @@ public class ActivityLecteur extends Activity {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+
     }
 }

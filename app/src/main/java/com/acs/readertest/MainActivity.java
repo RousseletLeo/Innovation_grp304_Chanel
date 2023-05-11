@@ -108,13 +108,12 @@ public class MainActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
     /*Code de Krissou*/
 
 
 
     //Check la connection USB avec le lecteur, et l'autorisation à utiliser le lecteur.
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+    public final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
 
