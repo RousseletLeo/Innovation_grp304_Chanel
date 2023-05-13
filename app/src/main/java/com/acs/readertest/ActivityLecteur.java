@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 public class ActivityLecteur extends Activity {
 
@@ -26,5 +27,22 @@ public class ActivityLecteur extends Activity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent2 = new Intent(this, ActivitySettings.class);
+                startActivity(intent2);
+                return true;
+            case R.id.action_help:
+                Intent intent3 = new Intent(this, ActivityHelp.class);
+                startActivity(intent3);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

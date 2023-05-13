@@ -29,7 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="16dp"
+            android:entries="@array/spinner_langues" />
 
     </RelativeLayout>
 
@@ -50,7 +51,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="16dp"
+            android:entries="@array/spinner_themes" />
 
     </RelativeLayout>
 
@@ -75,19 +77,52 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/sauvegarder_param"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sauvegarder"
         android:layout_marginTop="16dp"
-        android:layout_gravity="end" />
+        android:layout_gravity="end"
+        android:onClick="sauvegarder" />
 
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <!-- Faire autorisations de salles !! -->
+        <View
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <!-- Autorisations de salles -->
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/tv_auto_salles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/niveau_auto"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/sp_auto_salles"
+            android:layout_width="194dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:entries="@array/spinner_items_values" />
+
     </LinearLayout>
 
+    <Button
+        android:id="@+id/sauvegarder_auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sauvegarder"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="end"
+        android:onClick="maj_autorisations" />
 
 </LinearLayout>
 

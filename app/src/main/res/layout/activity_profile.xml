@@ -32,7 +32,7 @@
         android:layout_below="@+id/profile_picture"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Krissou Krissou"
+        android:text="@string/nom"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -46,7 +46,7 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
         android:lineSpacingExtra="8dp"
-        android:text="Hey !"
+        android:text="@string/biographie"
         android:textColor="@color/noir"
         android:textSize="16sp" />
 
@@ -62,7 +62,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="250dp"
-            android:text="Adresse mail"
+            android:text="@string/adresse_mail"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -72,7 +72,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="270dp"
-            android:text="nom.prenom@entreprise.com"
+            android:text="@string/email_profil"
             android:textSize="14sp" />
 
         <TextView
@@ -81,7 +81,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="350dp"
-            android:text="Poste occupé"
+            android:text="@string/poste_occupe"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -91,7 +91,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="370dp"
-            android:text="Ingénieur développement"
+            android:text="@string/poste_profil"
             android:textSize="14sp" />
 
         <TextView
@@ -100,7 +100,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="300dp"
-            android:text="Numéro de téléphone"
+            android:text="@string/num_tel"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -111,7 +111,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginTop="320dp"
             android:phoneNumber="true"
-            android:text="01 23 45 67 89"
+            android:text="@string/num_tel_profil"
             android:textSize="14sp" />
 
         <TextView
@@ -120,7 +120,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="420dp"
-            android:text="Autorisations de salles"
+            android:text="@string/niveau_auto_profil"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -130,7 +130,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="440dp"
-            android:text="Salle 1, Salle 2, Salle 3"
+            android:text="@string/niveau_3"
             android:textSize="14sp" />
 
     </RelativeLayout>

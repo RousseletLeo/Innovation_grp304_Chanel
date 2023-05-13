@@ -4,7 +4,9 @@ import static com.acs.readertest.R.id.details_button;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,10 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 public class ActivitySimpleMode extends Activity {
-
     private ImageView checkImage;
     private Button detailsButton;
-    private boolean condition;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -28,11 +28,15 @@ public class ActivitySimpleMode extends Activity {
         checkImage = findViewById(R.id.check_image_view);
         detailsButton = findViewById(details_button);
 
-        // Condition à vérifier
-        condition = true; // Mettre à false pour tester la croix rouge
+        // Données de la carte
+        int niveauAutorisation = 1;
+
+        // Lecture de la base de données
+        SharedPreferences prefs = getSharedPreferences("base_de_donnees", Context.MODE_PRIVATE);
+        int niv_auto_sett = prefs.getInt("niv_auto_sett", 0);
 
         // Affichage du check ou de la croix rouge
-        if (condition) {
+        if (niveauAutorisation >= niv_auto_sett) {
             checkImage.setImageResource(R.drawable.ic_check);
         } else {
             checkImage.setImageResource(R.drawable.ic_error);

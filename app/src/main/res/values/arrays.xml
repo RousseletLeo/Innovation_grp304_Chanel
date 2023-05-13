@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <array name="spinner_items_values">
+        <item>@string/niveau_0</item>
+        <item>@string/niveau_1</item>
+        <item>@string/niveau_2</item>
+        <item>@string/niveau_3</item>
+    </array>
+
+    <string-array name="spinner_langues">
+        <item>@string/francais</item>
+        <item>@string/anglais</item>
+    </string-array>
+
+    <string-array name="spinner_themes">
+        <item>@string/sombre</item>
+        <item>@string/clair</item>
+        <item>@string/base_sur_systeme</item>
+    </string-array>
+
+</resources>
