@@ -40,7 +40,8 @@
         <activity
             android:name=".ActivitySettings"
             android:exported="true"
-            android:parentActivityName=".ActivitySimpleMode" />
+            android:parentActivityName=".ActivitySimpleMode"
+            android:configChanges="locale|orientation" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
