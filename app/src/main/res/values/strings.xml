@@ -33,26 +33,26 @@ Vous êtes au bon endroit !</string>
     <string name="help_content">Bienvenue dans la page d\'aide ! </string>
     <string name="help_prob_tech">Si vous rencontrez un problème technique ou une erreur, merci de vous adresser à cette adresse mail-ci :</string>
     <string name="help_share">N\'hésitez pas à partager l\'application autour de vous et à nous mettre 5 étoiles dans le Store ! :)</string>
-    <string name="email">chanel.companion@esme.fr</string>
+    <string name="email" translatable="false">chanel.companion@esme.fr</string>
     <string name="dedicace">Application codée par Léo ROUSSELET, Coline CHEN et Kris PIGOT dans le cadre d\'un projet à l\'ESME.</string>
     <string name="niveau_auto">Niveau d\'autorisation pour accéder à la salle :</string>
     <string name="niveau_0">Niveau 0</string>
     <string name="niveau_1">Niveau 1</string>
     <string name="niveau_2">Niveau 2</string>
     <string name="niveau_3">Niveau 3</string>
-    <string name="anglais">Anglais</string>
-    <string name="francais">Français</string>
+    <string name="anglais" translatable="false">English</string>
+    <string name="francais" translatable="false">Français</string>
     <string name="sombre">Sombre</string>
     <string name="clair">Clair</string>
     <string name="base_sur_systeme">Basé sur le système</string>
-    <string name="nom">Krissou Pigot</string>
+    <string name="nom" translatable="false">Krissou Pigot</string>
     <string name="biographie">Hey !</string>
     <string name="adresse_mail">Adresse mail :</string>
     <string name="poste_occupe">Poste occupé :</string>
-    <string name="email_profil">nom.prenom@entreprise.com</string>
+    <string name="email_profil" translatable="false">nom.prenom@entreprise.com</string>
     <string name="poste_profil">Ingénieur développement</string>
     <string name="num_tel">Numéro de téléphone :</string>
-    <string name="num_tel_profil">01 23 45 67 89</string>
+    <string name="num_tel_profil" translatable="false">01 23 45 67 89</string>
     <string name="niveau_auto_profil">Niveau d\'autorisation :</string>
 
 </resources>

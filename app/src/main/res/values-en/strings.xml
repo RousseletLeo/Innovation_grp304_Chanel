@@ -1,5 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CHANEL Companion</string>
     <string name="action_settings">Settings</string>
+    <string name="action_developpers_mode">Developer mode</string>
+    <string name="reader">Connected readers:</string>
+    <string name="list">Search</string>
+    <string name="informations_lecteur">Information about reader:</string>
+    <string name="get_state">Reader status</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="power_action">Startup protocol:</string>
+    <string name="power">Launch</string>
+    <string name="get_protocol">Get Protocol</string>
+    <string name="transmit_control">Commands:</string>
+    <string name="transmit">Transmit APDU</string>
+    <string name="secure_pin_entry">Secure PIN Entry:</string>
+    <string name="get_features">Functionalities</string>
+    <string name="enter_apdu_here">Enter APDU: FF B0 00 04 10</string>
+    <string name="ReadTag">Read</string>
+    <string name="WriteTag">Write</string>
+    <string name="action_simple_mode">Simple mode</string>
+    <string name="parametres">Settings</string>
+    <string name="langue">Language</string>
+    <string name="theme">Theme</string>
+    <string name="notifications">Notifications</string>
+    <string name="sauvegarder">Save</string>
+    <string name="veuillez_scanner_une_carte">Please scan a card…</string>
+    <string name="veuillez_brancher_le_lecteur">Please connect a reader…</string>
+    <string name="action_help">Need help?</string>
+    <string name="help_title">Need help?
+You are at the right place!</string>
+    <string name="help_content">Welcome in the help page!</string>
+    <string name="help_prob_tech">If you encounter a technical problem or an error, please contact this email address:</string>
+    <string name="help_share">Feel free to share the app with your friends and give us a 5-star rating on the Store! :)</string>
+    <string name="dedicace">Application coded by Léo ROUSSELET, Coline CHEN and Kris PIGOT as part of a project at ESME.</string>
+    <string name="niveau_auto">Level of authorization to access the room:</string>
+    <string name="niveau_0">Level 0</string>
+    <string name="niveau_1">Level 1</string>
+    <string name="niveau_2">Level 2</string>
+    <string name="niveau_3">Level 3</string>
+    <string name="sombre">Dark mode</string>
+    <string name="clair">Light mode</string>
+    <string name="base_sur_systeme">Automatic mode</string>
+    <string name="biographie">Hey!</string>
+    <string name="adresse_mail">Email:</string>
+    <string name="poste_occupe">Job:</string>
+    <string name="poste_profil">Designer</string>
+    <string name="num_tel">Mobile phone:</string>
+    <string name="niveau_auto_profil">Level of authorization :</string>
 </resources>

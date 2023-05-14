@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="niv_auto_sett">0</integer>
-    <string name="language">@string/francais</string>
-    <string name="theme_spinner">@string/base_sur_systeme</string>
 </resources>
