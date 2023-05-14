@@ -9,13 +9,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 
 public class ActivitySettings extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        //Animation : l'engrenage qui tourne
+        ImageView ic_settings = findViewById(R.id.imageView2);
+        RotateAnimation rotateAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setDuration(1000);
+        rotateAnimation.setRepeatCount(Animation.INFINITE);
+        ic_settings.startAnimation(rotateAnimation);
     }
+
+    //Mettre en pause l'animation lorsqu'on quitte la page
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ImageView gearImageView = findViewById(R.id.imageView2);
+        gearImageView.clearAnimation();
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
