@@ -104,6 +104,8 @@ public class MainActivity extends Activity {
         }
     }
 
+
+
     /*Code de Krissou*/
 
 
@@ -409,6 +411,21 @@ public class MainActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Veuillez brancher le lecteur")
+                .setTitle("Lecteur déconnecté")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Action à exécuter lorsque l'utilisateur clique sur "OK"
+                        
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
         // Get USB manager
         mManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         // Initialise le lecteur
