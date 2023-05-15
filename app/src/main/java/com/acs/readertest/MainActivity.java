@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_simple_mode:
                 //simple_mode
-                Toast.makeText(getApplicationContext(),"Vous vous trouvez en mode simplifié", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.mode_simplifie, Toast.LENGTH_SHORT).show();
                 Intent intent0 = new Intent(this, ActivityLecteur.class);
                 startActivity(intent0);
                 return true;
@@ -419,8 +419,8 @@ public class MainActivity extends Activity {
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Veuillez brancher le lecteur")
-                .setTitle("Lecteur déconnecté")
+        builder.setMessage(R.string.veuillez_brancher_le_lecteur)
+                .setTitle(R.string.lecteur_deco)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Action à exécuter lorsque l'utilisateur clique sur "OK"

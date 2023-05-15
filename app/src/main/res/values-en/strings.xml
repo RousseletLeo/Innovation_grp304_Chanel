@@ -47,4 +47,8 @@ You are at the right place!</string>
     <string name="poste_profil">Designer</string>
     <string name="num_tel">Mobile phone:</string>
     <string name="niveau_auto_profil">Level of authorization :</string>
+    <string name="details">Details</string>
+    <string name="mode_avance">Advanced mode</string>
+    <string name="lecteur_deco">Reader disconnected</string>
+    <string name="mode_simplifie">You are in simple mode</string>
 </resources>

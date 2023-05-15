@@ -54,5 +54,9 @@ Vous êtes au bon endroit !</string>
     <string name="num_tel">Numéro de téléphone :</string>
     <string name="num_tel_profil" translatable="false">01 23 45 67 89</string>
     <string name="niveau_auto_profil">Niveau d\'autorisation :</string>
+    <string name="details">Détails</string>
+    <string name="mode_avance">Mode avancé</string>
+    <string name="lecteur_deco">Lecteur déconnecté</string>
+    <string name="mode_simplifie">Vous vous trouvez en mode simplifié</string>
 
 </resources>

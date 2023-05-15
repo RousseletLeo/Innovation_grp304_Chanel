@@ -30,7 +30,7 @@
         android:layout_marginStart="122dp"
         android:layout_marginEnd="122dp"
         android:layout_marginBottom="-80dp"
-        android:text="Détails"
+        android:text="@string/details"
         android:visibility="gone" />
 
 </RelativeLayout>

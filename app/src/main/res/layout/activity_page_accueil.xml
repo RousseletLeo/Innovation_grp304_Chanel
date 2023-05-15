@@ -33,7 +33,7 @@
             android:layout_marginBottom="0dp"
             android:background="@drawable/ic_rectangle_arrondi"
             android:onClick="launchMainActivity"
-            android:text="Mode avancé"
+            android:text="@string/mode_avance"
             android:textAppearance="@android:style/TextAppearance.Material.Display1" />
 
     </LinearLayout>

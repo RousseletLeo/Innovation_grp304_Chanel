@@ -15,8 +15,8 @@ public class ActivityLecteur extends Activity {
         setContentView(R.layout.activity_lecteur);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Veuillez brancher le lecteur")
-                .setTitle("Lecteur déconnecté")
+        builder.setMessage(R.string.veuillez_brancher_le_lecteur)
+                .setTitle(R.string.lecteur_deco)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Action à exécuter lorsque l'utilisateur clique sur "OK"
