@@ -418,19 +418,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.veuillez_brancher_le_lecteur)
-                .setTitle(R.string.lecteur_deco)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Action à exécuter lorsque l'utilisateur clique sur "OK"
-
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-
         // Get USB manager
         mManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         // Initialise le lecteur

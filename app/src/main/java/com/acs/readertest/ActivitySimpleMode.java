@@ -2,7 +2,6 @@ package com.acs.readertest;
 
 import static com.acs.readertest.R.id.details_button;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +17,7 @@ public class ActivitySimpleMode extends Activity {
     private ImageView checkImage;
     private Button detailsButton;
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +28,8 @@ public class ActivitySimpleMode extends Activity {
         detailsButton = findViewById(details_button);
 
         // Données de la carte
-        int niveauAutorisation = 1;
+        SharedPreferences prefs_2 = getSharedPreferences("base_de_donnees", Context.MODE_PRIVATE);
+        int niveauAutorisation = prefs_2.getInt("niv_auto_carte", 0);
 
         // Lecture de la base de données
         SharedPreferences prefs = getSharedPreferences("base_de_donnees", Context.MODE_PRIVATE);
@@ -42,6 +42,7 @@ public class ActivitySimpleMode extends Activity {
             checkImage.setImageResource(R.drawable.ic_error);
         }
         detailsButton.setVisibility(View.VISIBLE);
+
 
         // Ajout d'un listener pour le bouton de détails
         detailsButton.setOnClickListener(new View.OnClickListener() {

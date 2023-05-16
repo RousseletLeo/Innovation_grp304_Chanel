@@ -2,76 +2,87 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.acs.readertest"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
 
     <uses-feature android:name="android.hardware.usb.host" />
+
+    <uses-permission android:name="android.permission.USB_PERMISSION" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
+
+        <!-- Activities -->
+        <activity
+            android:name=".ActivityModifier"
+            android:exported="false"
+            android:parentActivityName=".ActivityProfile">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.acs.readertest.ActivityProfile" />
+        </activity>
         <activity
             android:name=".ActivityProfile"
-            android:exported="false" />
-
+            android:exported="false"
+            android:parentActivityName=".ActivitySimpleMode">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.acs.readertest.ActivitySimpleMode" />
+        </activity>
         <activity
             android:name=".ActivityHelp"
             android:exported="false" />
-
         <activity
             android:name=".ActivityCarte"
             android:exported="true"
-            android:parentActivityName=".ActivityLecteur">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.acs.readertest.ActivityCarte" />
-        </activity>
-
-        <activity
-            android:name=".ActivityLecteur"
-            android:exported="true"
-            android:parentActivityName=".ActivityPageAccueil">
+            android:parentActivityName=".ActivityLecteur" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.acs.readertest.ActivityLecteur" />
         </activity>
-
         <activity
-            android:name=".ActivitySettings"
+            android:name=".ActivityLecteur"
             android:exported="true"
-            android:parentActivityName=".ActivitySimpleMode"
-            android:configChanges="locale|orientation" />
-
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.acs.readertest.ActivitySettings" />
-
-        <activity
-            android:name=".ActivityPageAccueil"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:parentActivityName=".ActivityPageAccueil">
+            android:parentActivityName=".ActivityPageAccueil" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.acs.readertest.MainActivity" />
+                android:value="com.acs.readertest.ActivityPageAccueil" />
         </activity>
-
         <activity
-            android:name=".ActivitySimpleMode"
+            android:name=".ActivitySettings"
+            android:configChanges="locale|orientation"
             android:exported="true"
-            android:parentActivityName=".ActivityPageAccueil">
+            android:parentActivityName=".ActivitySimpleMode">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.acs.readertest.ActivitySimpleMode" />
+        </activity>
+        <activity
+            android:name=".ActivityPageAccueil"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:parentActivityName=".ActivityPageAccueil" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.acs.readertest.ActivityPageAccueil" />
+        </activity>
+        <activity
+            android:name=".ActivitySimpleMode"
+            android:exported="true"
+            android:parentActivityName=".ActivityPageAccueil" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.acs.readertest.ActivityPageAccueil" />
         </activity>
     </application>
 
