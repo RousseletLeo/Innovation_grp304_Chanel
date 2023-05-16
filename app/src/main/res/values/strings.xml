@@ -44,7 +44,7 @@ Vous êtes au bon endroit !</string>
     <string name="francais" translatable="false">Français</string>
     <string name="sombre">Sombre</string>
     <string name="clair">Clair</string>
-    <string name="base_sur_systeme">Basé sur le système</string>
+    <string name="automatique_theme">Automatique</string>
     <string name="nom" translatable="false">Krissou Pigot</string>
     <string name="biographie">Hey !</string>
     <string name="adresse_mail">Adresse mail :</string>
@@ -58,5 +58,7 @@ Vous êtes au bon endroit !</string>
     <string name="mode_avance">Mode avancé</string>
     <string name="lecteur_deco">Lecteur déconnecté</string>
     <string name="mode_simplifie">Vous vous trouvez en mode simplifié</string>
+    <string name="click_here">Cliquez sur le logo pour accéder au mode simplifié !</string>
+    <string name="modifier">Modifier</string>
 
 </resources>

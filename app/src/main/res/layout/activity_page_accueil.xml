@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/noir">
@@ -7,35 +7,61 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/noir">
+        android:background="@color/noir"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:layout_marginLeft="55dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:background="#FAF7F7"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="0dp"
+            android:adjustViewBounds="false"
+            android:background="#FFFFFF"
+            android:baselineAligned="true"
             android:onClick="launchActivitySimpleMode"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:paddingRight="5dp"
             android:paddingBottom="5dp"
-            android:src="@mipmap/ic_launcher_round" />
+            android:src="@drawable/design_sans_titre_petit" />
+
+        <ImageView
+            android:id="@+id/arrowImageView"
+            android:layout_width="100dp"
+            android:layout_height="95dp"
+            android:src="@drawable/ic_arrow"
+            android:translationX="150dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="314dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/arrowImageView"
+            android:fontFamily="casual"
+            android:gravity="bottom|center"
+            android:text="@string/click_here"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:translationX="50dp" />
 
         <Button
             android:id="@+id/modedevButton"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginLeft="130dp"
-            android:layout_marginBottom="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="170dp"
+            android:layout_marginEnd="0dp"
             android:background="@drawable/ic_rectangle_arrondi"
             android:onClick="launchMainActivity"
             android:text="@string/mode_avance"
-            android:textAppearance="@android:style/TextAppearance.Material.Display1" />
+            android:textAppearance="@android:style/TextAppearance.Material.Display1"
+            android:textSize="16sp"
+            android:translationY="-120dp" />
 
     </LinearLayout>
 
-</RelativeLayout>
+</FrameLayout>

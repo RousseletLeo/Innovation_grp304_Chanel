@@ -17,7 +17,7 @@
     <string-array name="spinner_themes">
         <item>@string/sombre</item>
         <item>@string/clair</item>
-        <item>@string/base_sur_systeme</item>
+        <item>@string/automatique_theme</item>
     </string-array>
 
 </resources>

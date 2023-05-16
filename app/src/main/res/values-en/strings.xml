@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="auto_select">Level 1</string>
     <string name="action_settings">Settings</string>
     <string name="action_developpers_mode">Developer mode</string>
     <string name="reader">Connected readers:</string>
@@ -40,7 +41,7 @@ You are at the right place!</string>
     <string name="niveau_3">Level 3</string>
     <string name="sombre">Dark mode</string>
     <string name="clair">Light mode</string>
-    <string name="base_sur_systeme">Automatic mode</string>
+    <string name="automatique_theme">Automatic mode</string>
     <string name="biographie">Hey!</string>
     <string name="adresse_mail">Email:</string>
     <string name="poste_occupe">Job:</string>
@@ -51,4 +52,8 @@ You are at the right place!</string>
     <string name="mode_avance">Advanced mode</string>
     <string name="lecteur_deco">Reader disconnected</string>
     <string name="mode_simplifie">You are in simple mode</string>
+    <string name="langue_select">English</string>
+    <string name="theme_select">Automatic mode</string>
+    <string name="click_here">Click the logo to access the simple mode!</string>
+    <string name="modifier">Edit</string>
 </resources>
