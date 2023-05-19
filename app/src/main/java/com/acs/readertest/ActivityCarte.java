@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class ActivityCarte extends Activity {
@@ -16,6 +19,12 @@ public class ActivityCarte extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carte);
+
+        //Animation de la carte
+        ImageView carteImageView = findViewById(R.id.carteImageView);
+        Animation carteAnimation = AnimationUtils.loadAnimation(this, R.anim.carte_animation);
+        carteImageView.startAnimation(carteAnimation);
+
         boolean nfcReaderAvailable = getIntent().getBooleanExtra("nfc_reader_available", true);
         if (nfcReaderAvailable) {
             // Le lecteur NFC est disponible //

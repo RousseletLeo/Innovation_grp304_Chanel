@@ -12,6 +12,10 @@ import android.nfc.NfcManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class ActivityLecteur extends Activity {
@@ -22,6 +26,11 @@ public class ActivityLecteur extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lecteur);
+
+        //Animation du lecteur
+        ImageView lecteurImageView = findViewById(R.id.usbImageView);
+        Animation lecteurAnimation = AnimationUtils.loadAnimation(this, R.anim.usb_animation);
+        lecteurImageView.startAnimation(lecteurAnimation);
 
         // Vérifier si le lecteur NFC est branché en USB
         NfcManager nfcManager = (NfcManager) getSystemService(Context.NFC_SERVICE);
@@ -110,5 +119,10 @@ public class ActivityLecteur extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void launchActivityProfil(View view) {
+        Intent intent98765 = new Intent(this, ActivityProfile.class);
+        startActivity(intent98765);
     }
 }

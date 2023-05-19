@@ -33,7 +33,7 @@ public class ActivitySimpleMode extends Activity {
 
         // Lecture de la base de données
         SharedPreferences prefs = getSharedPreferences("base_de_donnees", Context.MODE_PRIVATE);
-        int niv_auto_sett = prefs.getInt("niv_auto_sett", 0);
+        int niv_auto_sett = prefs.getInt("niv_auto_sett", 3);
 
         // Affichage du check ou de la croix rouge
         if (niveauAutorisation >= niv_auto_sett) {
