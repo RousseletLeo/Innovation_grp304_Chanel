@@ -28,6 +28,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acs.readertest.gui.ActivitySettings;
+import com.acs.readertest.nfc.NfcUtils;
+import com.acs.readertest.nfc.ReaderTools;
 import com.acs.smartcard.Features;
 import com.acs.smartcard.Reader;
 import com.acs.smartcard.Reader.OnStateChangeListener;
@@ -45,27 +48,22 @@ import java.util.Date;
 
 
 
-//VERSION MERGE FINAL
-
 
 public class MainActivity extends Activity {
 
     static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
-
     private static final String[] powerActionStrings = { "Power Down", "Cold Reset", "Warm Reset" };
-
     private static final String[] stateStrings = { "Unknown", "Absent", "Present",
             "Swallowed", "Powered", "Negotiable", "Specific" };
-
+    public static Button mOpenButton;
     private UsbManager mManager;
-    private static Reader mReader;
+    public static Reader mReader;
     private PendingIntent mPermissionIntent;
     private static final int MAX_LINES = 25;
     private TextView mResponseTextView;
     private Spinner mReaderSpinner;
     private ArrayAdapter<String> mReaderAdapter;
     private Spinner mPowerSpinner;
-    private Button mOpenButton;
     private Button mCloseButton;
     private Button mPowerButton;
     private EditText mCommandEditText;
@@ -75,38 +73,6 @@ public class MainActivity extends Activity {
     private static final Features mFeatures = new Features();
     private String typeOfCard = "";
     private String m_Text;
-
-    /*Code de Krissou*/
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.imageView:
-                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur mode avancé", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.action_settings:
-                //settings();
-                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur les paramètres", Toast.LENGTH_SHORT).show();
-                Intent intent2 = new Intent(this, ActivitySettings.class);
-                startActivity(intent2);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /*Code de Krissou*/
-
-
 
     //Check la connection USB avec le lecteur, et l'autorisation à utiliser le lecteur.
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -145,7 +111,7 @@ public class MainActivity extends Activity {
                     if (device != null && device.equals(mReader.getDevice())) {
                         setButtons(false);
                         logMsg("Closing reader...");
-                        new CloseTask().execute();
+                        new ReaderTools.CloseTask().execute();
                     }
                 }
             }
@@ -189,20 +155,6 @@ public class MainActivity extends Activity {
 
 
 
-
-    //Fermer l'accès au lecteur
-    class CloseTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            mReader.close();
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void result) {
-            mOpenButton.setEnabled(true);
-        }
-    }
 
 
 
@@ -392,12 +344,46 @@ public class MainActivity extends Activity {
             if (progress[0].e != null) {
                 logMsg(progress[0].e.toString());
             } else {
-                logBuffer(progress[0].response, progress[0].responseLength);
+                String dataContent = logBuffer(progress[0].response, progress[0].responseLength);
+
+                try{
+                    String hexTlvLength = NfcUtils.readTLVdata(dataContent);
+                }catch(Exception e){
+                    logMsg("Exception");
+                }
             }
         }
     }
 
 
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.imageView:
+                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur mode avancé", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_settings:
+                //settings();
+                Toast.makeText(getApplicationContext(),"Vous avez cliqué sur les paramètres", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(this, ActivitySettings.class);
+                startActivity(intent2);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 
 
@@ -523,7 +509,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 setButtons(false);
                 logMsg("Closing reader...");
-                new CloseTask().execute();
+                new ReaderTools.CloseTask().execute();
             }
         });
 
@@ -596,6 +582,8 @@ public class MainActivity extends Activity {
                 String[] arr;
                 logMsg("Informations mémoires : ");
 
+
+
                 if (typeOfCard.equals("Mifare Ultralight")){
                     //Read 4 pages by 4 pages (it seems to be impossible to do more in one command)
                     arr= new String[]{"04","08", "0C"};
@@ -623,26 +611,35 @@ public class MainActivity extends Activity {
         mWriteTagButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Ecriture mémoire");
                 builder.setMessage("Quel est le message que vous voulez écrire dans la mémoire ? ");
 
-                // Set up the input
+                //EditText
                 final EditText input = new EditText(MainActivity.this);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
 
-                // Set up the buttons
+                //Confirm button
                 builder.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         m_Text = input.getText().toString();
-                        String textParsed = NfcUtils.parseText(m_Text);
-                        logMsg("Votre message à bien été enregistré : ");
-                        logMsg(m_Text);
-                        logMsg(textParsed);
+                        String textParsed = NfcUtils.textToNDef(m_Text);
+                        try {
+                            assert textParsed != null;
+                            logMsg("Votre message à bien été enregistré : ");
+                            logMsg(m_Text);
+                            logMsg(textParsed);
+                        }catch(Exception e){
+                            logMsg("Null Exception");
+                        }
                     }
                 });
+
+                //Cancel button
                 builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -705,7 +702,7 @@ public class MainActivity extends Activity {
             }
             if (i % 16 == 0) {
                 if (!bufferString.toString().equals("")) {
-                    logMsg(bufferString.toString());
+                    //logMsg(bufferString.toString());
                     completeBufferString = bufferString.toString();
                     bufferString = new StringBuilder();
                 }
@@ -713,7 +710,7 @@ public class MainActivity extends Activity {
             bufferString.append(hexChar.toUpperCase()).append(" ");
         }
         if (!bufferString.toString().equals("")) {
-            logMsg(bufferString.toString());
+            //logMsg(bufferString.toString());
         }
         completeBufferString = completeBufferString + bufferString;
         return completeBufferString;
@@ -744,5 +741,4 @@ public class MainActivity extends Activity {
         mReadTagButton.setEnabled(bool);
         mWriteTagButton.setEnabled(bool);
     }
-
 }

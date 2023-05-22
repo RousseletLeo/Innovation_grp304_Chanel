@@ -12,42 +12,42 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ActivityProfile"
+            android:name=".gui.ActivityProfile"
             android:exported="false" />
 
         <activity
-            android:name=".ActivityHelp"
+            android:name=".gui.ActivityHelp"
             android:exported="false" />
 
         <activity
-            android:name=".ActivityCarte"
+            android:name=".gui.ActivityCarte"
             android:exported="true"
-            android:parentActivityName=".ActivityLecteur">
+            android:parentActivityName=".gui.ActivityLecteur">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.acs.readertest.ActivityCarte" />
+                android:value="com.acs.readertest.gui.ActivityCarte" />
         </activity>
 
         <activity
-            android:name=".ActivityLecteur"
+            android:name=".gui.ActivityLecteur"
             android:exported="true"
-            android:parentActivityName=".ActivityPageAccueil">
+            android:parentActivityName=".gui.ActivityPageAccueil">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.acs.readertest.ActivityLecteur" />
+                android:value="com.acs.readertest.gui.ActivityLecteur" />
         </activity>
 
         <activity
-            android:name=".ActivitySettings"
+            android:name=".gui.ActivitySettings"
             android:exported="true"
-            android:parentActivityName=".ActivitySimpleMode" />
+            android:parentActivityName=".gui.ActivitySimpleMode" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.acs.readertest.ActivitySettings" />
+            android:value="com.acs.readertest.gui.ActivitySettings" />
 
         <activity
-            android:name=".ActivityPageAccueil"
+            android:name=".gui.ActivityPageAccueil"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,19 +58,19 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:parentActivityName=".ActivityPageAccueil">
+            android:parentActivityName=".gui.ActivityPageAccueil">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.acs.readertest.MainActivity" />
         </activity>
 
         <activity
-            android:name=".ActivitySimpleMode"
+            android:name=".gui.ActivitySimpleMode"
             android:exported="true"
-            android:parentActivityName=".ActivityPageAccueil">
+            android:parentActivityName=".gui.ActivityPageAccueil">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.acs.readertest.ActivitySimpleMode" />
+                android:value="com.acs.readertest.gui.ActivitySimpleMode" />
         </activity>
     </application>
 

@@ -1,10 +1,12 @@
-package com.acs.readertest;
+package com.acs.readertest.gui;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.acs.readertest.R;
 
 /**
  * A simple {@link Fragment} subclass.

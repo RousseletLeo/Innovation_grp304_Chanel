@@ -1,33 +1,12 @@
-package com.acs.readertest;
+package com.acs.readertest.nfc;
 
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 
 public class NfcUtils {
 
-    //Récupérer l'ATR pour avoir le type de carte
-    //Si classik 1k : vérifier si l'authentification en écriture à été faite sur tout les blocs mémoire
-
-
-    //Effacer tout le contenu de la carte
-    public void formate(){
-
-    }
-
-
-
-
-
-    //Pour l'instant gère que les Mifare Ultralight
-    public String writeTag(String hexStartPage, String hexNumberBytes, String hexText){
-        return "FF D6 00" + hexStartPage + hexNumberBytes + hexText;
-    }
-
-
-
-
     //Formatage en NDefMessage
-    public static String parseText(String text){
+    public static String textToNDef(String text){
 
         //Création d'un NDefMessage à partir d'un texte
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -37,11 +16,11 @@ public class NfcUtils {
 
             //Ajouter TLV
             if(text.length()>0){
-                String StringTLVstart = "03 ";
-                String StringTLVTerminator = "FE";
-                int TLVLenght = textMessage.getByteArrayLength();
-                String StringTLVLenght = NfcUtils.toHexString(TLVLenght);
-                return StringTLVstart + StringTLVLenght + " " + hexStringTextMessage + StringTLVTerminator;
+                String TLVstart = "03 ";
+                String TLVTerminator = "FE";
+                String TLVLenght = NfcUtils.toHexString(textMessage.getByteArrayLength());
+
+                return TLVstart + TLVLenght + " " + hexStringTextMessage + TLVTerminator;
             }
         }
         return null;
@@ -49,20 +28,19 @@ public class NfcUtils {
 
 
 
-
-
-
-
-    //authentification sur un bloc mémoire
-    public void logInDataBlock(){
-
+    //String hexa avec espace en ascii : "48 65 6C 6C 6F " == "Hello"
+    public static String hexToAscii(String hexStr) {
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < hexStr.length(); i += 3) {
+            String str = hexStr.substring(i, i + 2);
+            output.append((char) Integer.parseInt(str, 16));
+        }
+        return output.toString();
     }
 
 
 
-
     public static String toHexString(int i) {
-
         String hexString = Integer.toHexString(i);
         if (hexString.length() % 2 != 0) {
             hexString = "0" + hexString;
@@ -74,9 +52,7 @@ public class NfcUtils {
 
 
     public static String toHexString(byte[] buffer) {
-
         StringBuilder bufferString = new StringBuilder();
-
         for (byte b : buffer) {
             String hexChar = Integer.toHexString(b & 0xFF);
             if (hexChar.length() == 1) {
@@ -138,4 +114,20 @@ public class NfcUtils {
         }
         return byteArray;
     }
+
+
+    //Return the length of any NDefMessage in a given String
+    public static String readTLVdata(String dataContent){
+
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < dataContent.length(); i += 3) {
+            String octet = dataContent.substring(i, i + 2);
+            if(octet.equals("03")){
+                return dataContent.substring(i+3,i+5); //return Message length
+            }
+        }
+        return "00";
+    }
+
+
 }

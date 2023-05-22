@@ -1,10 +1,13 @@
-package com.acs.readertest;
+package com.acs.readertest.gui;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import com.acs.readertest.MainActivity;
+import com.acs.readertest.R;
 
 public class ActivityPageAccueil extends Activity {
     private static final String LOG_TAG =ActivityPageAccueil.class.getSimpleName();

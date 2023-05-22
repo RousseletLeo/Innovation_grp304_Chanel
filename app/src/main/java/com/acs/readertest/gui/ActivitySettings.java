@@ -1,4 +1,4 @@
-package com.acs.readertest;
+package com.acs.readertest.gui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.acs.readertest.R;
+
 public class ActivitySettings extends Activity {
 
-    private static final String LOG_TAG =ActivitySimpleMode.class.getSimpleName();
+    private static final String LOG_TAG = ActivitySimpleMode.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,4 +1,4 @@
-package com.acs.readertest;
+package com.acs.readertest.gui;
 
 import static com.acs.readertest.R.id.details_button;
 
@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.acs.readertest.R;
 
 public class ActivitySimpleMode extends Activity {
 
