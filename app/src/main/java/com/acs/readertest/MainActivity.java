@@ -34,6 +34,7 @@ import com.acs.smartcard.Reader.OnStateChangeListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -45,7 +46,8 @@ import java.util.Date;
 
 
 
-//VERSION MERGE FINAL
+//TO DO : FF CA 00 00 00, écrire PLUSIEURS messages à la suite. Lire plusieurs message et les lister, les afficher
+    // sous format texte, enregistrer les données dans BDD, généraliser le code. Faire ca pour les deux cartes
 
 
 public class MainActivity extends Activity {
@@ -75,45 +77,6 @@ public class MainActivity extends Activity {
     private static final Features mFeatures = new Features();
     private String typeOfCard = "";
     private String m_Text;
-
-    /*Code de Krissou*/
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.action_simple_mode:
-                //simple_mode
-                Toast.makeText(getApplicationContext(),R.string.mode_simplifie, Toast.LENGTH_SHORT).show();
-                Intent intent0 = new Intent(this, ActivityLecteur.class);
-                startActivity(intent0);
-                return true;
-            case R.id.action_help:
-                //besoin d'aide
-                Intent intent = new Intent(this, ActivityHelp.class);
-                startActivity(intent);
-                return true;
-            case R.id.action_settings:
-                //settings();
-                Intent intent2 = new Intent(this, ActivitySettings.class);
-                startActivity(intent2);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
-
-    /*Code de Krissou*/
-
-
 
     //Check la connection USB avec le lecteur, et l'autorisation à utiliser le lecteur.
     public final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -158,6 +121,11 @@ public class MainActivity extends Activity {
             }
         }
     };
+
+
+
+
+
 
     //Ouvrir l'accès au lecteur
     class OpenTask extends AsyncTask<UsbDevice, Void, Exception> {
@@ -654,12 +622,36 @@ public class MainActivity extends Activity {
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
 
+
+
+
                 // Set up the buttons
                 builder.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        //Récupération text, conversion en NDefMessage, supprimer les espaces
+                        //et séparer le message en groupe de 4 octets
                         m_Text = input.getText().toString();
                         String textParsed = NfcUtils.parseText(m_Text);
+                        textParsed = textParsed.replaceAll("\\s", "");
+                        ArrayList textTruncated = NfcUtils.divideString(textParsed, 8, '0');
+
+                        String[] page = new String[]{"04","05", "06","07","08","09","0A","0B","0C",
+                                "0D","0E","0F"};
+
+                        //Ecriture 4 octets par 4 pour des ultralight, et 10 par 10 sinon
+                        //(restrictions des cartes)
+                        try {
+                            for(int indexPage=0;indexPage<page.length;indexPage++){
+                                TransmitParams params = new TransmitParams();
+                                params.controlCode = -1;
+                                params.commandString = "FF D6 00 " + page[indexPage] + " 04 " + textTruncated.get(indexPage).toString();
+                                new TransmitTask().execute(params);
+                            }
+                        }catch(Exception e){
+                            logMsg("Fin mémoire.");
+                        }
                         logMsg("Votre message à bien été enregistré : ");
                         logMsg(m_Text);
                         logMsg(textParsed);
@@ -678,7 +670,6 @@ public class MainActivity extends Activity {
         setButtons(false);
         // Hide input window
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
     }
 
 

@@ -1,7 +1,12 @@
 package com.acs.readertest;
 
+import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 
 public class NfcUtils {
 
@@ -18,12 +23,38 @@ public class NfcUtils {
 
 
 
-    //Pour l'instant gère que les Mifare Ultralight
-    public String writeTag(String hexStartPage, String hexNumberBytes, String hexText){
+    public static String writeTag(String hexStartPage, String hexNumberBytes, String hexText){
+
+        System.out.println("test");
         return "FF D6 00" + hexStartPage + hexNumberBytes + hexText;
     }
 
 
+
+    // Function to split the String into substring of lenght K
+    static ArrayList<String> divideString(String str, int K, char ch) {
+        int N = str.length();
+        int j = 0;
+        ArrayList<String> result = new ArrayList<>();
+        String res = "";
+        while (j < N) {
+
+            res += str.charAt(j);
+            if (res.length() == K) {
+                result.add(res);
+                res = "";
+            }
+            j++;
+        }
+
+        if (res != "") {
+            while (res.length() < K) {
+                res += ch;
+            }
+            result.add(res);
+        }
+        return result;
+    }
 
 
     //Formatage en NDefMessage
@@ -58,6 +89,19 @@ public class NfcUtils {
 
     }
 
+
+    public NdefMessage[] getNdefMessages(Intent intent) {
+        Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+        if (rawMessages != null) {
+            NdefMessage[] messages = new NdefMessage[rawMessages.length];
+            for (int i = 0; i < messages.length; i++) {
+                messages[i] = (NdefMessage) rawMessages[i];
+            }
+            return messages;
+        } else {
+            return null;
+        }
+    }
 
 
 
