@@ -10,28 +10,8 @@ import java.util.ArrayList;
 
 public class NfcUtils {
 
-    //Récupérer l'ATR pour avoir le type de carte
-    //Si classik 1k : vérifier si l'authentification en écriture à été faite sur tout les blocs mémoire
 
-
-    //Effacer tout le contenu de la carte
-    public void formate(){
-
-    }
-
-
-
-
-
-    public static String writeTag(String hexStartPage, String hexNumberBytes, String hexText){
-
-        System.out.println("test");
-        return "FF D6 00" + hexStartPage + hexNumberBytes + hexText;
-    }
-
-
-
-    // Function to split the String into substring of lenght K
+    //Split une String en plusieurs sous String de longueur K, char de complétion 'ch'
     static ArrayList<String> divideString(String str, int K, char ch) {
         int N = str.length();
         int j = 0;
@@ -47,6 +27,7 @@ public class NfcUtils {
             j++;
         }
 
+        //Complétion si lenght(str)//k n'est pas nul
         if (res != "") {
             while (res.length() < K) {
                 res += ch;
@@ -72,7 +53,10 @@ public class NfcUtils {
                 String StringTLVTerminator = "FE";
                 int TLVLenght = textMessage.getByteArrayLength();
                 String StringTLVLenght = NfcUtils.toHexString(TLVLenght);
-                return StringTLVstart + StringTLVLenght + " " + hexStringTextMessage + StringTLVTerminator;
+
+
+                return StringTLVstart + StringTLVLenght + " " +
+                        hexStringTextMessage + StringTLVTerminator;
             }
         }
         return null;
@@ -81,13 +65,6 @@ public class NfcUtils {
 
 
 
-
-
-
-    //authentification sur un bloc mémoire
-    public void logInDataBlock(){
-
-    }
 
 
     public NdefMessage[] getNdefMessages(Intent intent) {

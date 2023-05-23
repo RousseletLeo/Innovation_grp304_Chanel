@@ -16,8 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -26,7 +24,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.acs.smartcard.Features;
 import com.acs.smartcard.Reader;
@@ -39,6 +36,7 @@ import java.util.Date;
 
 /**
  * Read and write Mifare ultralight and Mifare Classik 1k program for ACR122U reader
+ * Formated in NDefMessage
  *
  * @author Rousselet Léo, Pigot Kris, Chen Coline, ESME
  * @version 0.1 13/01/2023
@@ -51,14 +49,12 @@ import java.util.Date;
 
 
 public class MainActivity extends Activity {
-
     static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
 
     private static final String[] powerActionStrings = { "Power Down", "Cold Reset", "Warm Reset" };
 
     private static final String[] stateStrings = { "Unknown", "Absent", "Present",
             "Swallowed", "Powered", "Negotiable", "Specific" };
-
     private UsbManager mManager;
     private static Reader mReader;
     private PendingIntent mPermissionIntent;
@@ -181,6 +177,36 @@ public class MainActivity extends Activity {
 
 
 
+    //Permet d'enregistrer les données lues, obligatoire pour éviter les problèmes de synchronisation
+    class getData extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            logMsg("Contenu mémoire : ");
+            logMsg(GlobalConstants.cardData);
+
+            String localCardData = GlobalConstants.cardData;
+            localCardData = localCardData.replaceAll("\\s", "");
+            ArrayList<String> localCardDataArray = NfcUtils.divideString(localCardData, 2, '0');
+
+            for(int i=0;i<localCardDataArray.size();i++){
+
+                //TLV 03 <==> NDefMessage
+                if(localCardDataArray.get(i).equals("03")){
+                    String hexMessageLenght = localCardDataArray.get(i+1);
+                    //La taille du message est donnée dans le TLV en hexa, on la converti en décimal
+                    int decimalMessageLenght= Integer.parseInt(hexMessageLenght,16);
+                    logMsg("Taille du message : ");
+                    logMsg(Integer.toString(decimalMessageLenght));
+                }
+            }
+        }
+    }
 
 
 
@@ -276,6 +302,7 @@ public class MainActivity extends Activity {
 
             } else {
                 logMsg("Active Protocol: T=1");
+
             }
         }
     }
@@ -367,7 +394,13 @@ public class MainActivity extends Activity {
             if (progress[0].e != null) {
                 logMsg(progress[0].e.toString());
             } else {
-                logBuffer(progress[0].response, progress[0].responseLength);
+                    GlobalConstants.cardData += logBuffer(progress[0].response, progress[0].responseLength);
+                    //Retirer les 5 derniers caractères de la String de réponse, qui correspondent
+                    //au code d'erreur de la Task lecteur
+                    for(int i =0;i<=5;i++){
+                        GlobalConstants.cardData = GlobalConstants.cardData.
+                                replaceFirst(".$", "");
+                    }
             }
         }
     }
@@ -391,7 +424,6 @@ public class MainActivity extends Activity {
                 .setTitle(R.string.lecteur_deco)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // Action à exécuter lorsque l'utilisateur clique sur "OK"
 
                     }
                 });
@@ -570,6 +602,7 @@ public class MainActivity extends Activity {
                 params.commandString = mCommandEditText.getText().toString();
                 logMsg("Slot 0 : Transmitting APDU...");
                 new TransmitTask().execute(params);
+
             }
         });
 
@@ -578,34 +611,8 @@ public class MainActivity extends Activity {
         mReadTagButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                logMsg("Processing Read command : please wait ...\n");
-                TransmitParams params = new TransmitParams();
-                params.controlCode = -1;
-
-                //Number of pages we want to read
-                String[] arr;
-                logMsg("Informations mémoires : ");
-
-                if (typeOfCard.equals("Mifare Ultralight")){
-                    //Read 4 pages by 4 pages (it seems to be impossible to do more in one command)
-                    arr= new String[]{"04","08", "0C"};
-                    for (String i:arr) {
-                        logMsg("Processing reading : " + i);
-                        params.commandString = "FF B0 00 " + i + " 10";
-                        new TransmitTask().execute(params);
-                    }
-
-                }else if (typeOfCard.equals("Mifare classic 1k")){
-                    // keyType 60 = key A, read-only | keyType 61 = key B, write only
-                    arr = new String[]{"00","04","08","0C","10","14","18","1C","20","24",
-                            "28","2C","30","34","38","3C"};
-                    for (String i:arr){
-                        loadKeys(i,"60","00");
-                        logMsg("Processing reading : " + i);
-                        params.commandString = "FF B0 00 "+ i + " 10";
-                        new TransmitTask().execute(params);
-                    }
-                }
+                getDataFromCard();
+                new getData().execute();
             }
         });
 
@@ -623,8 +630,6 @@ public class MainActivity extends Activity {
                 builder.setView(input);
 
 
-
-
                 // Set up the buttons
                 builder.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
                     @Override
@@ -635,7 +640,7 @@ public class MainActivity extends Activity {
                         m_Text = input.getText().toString();
                         String textParsed = NfcUtils.parseText(m_Text);
                         textParsed = textParsed.replaceAll("\\s", "");
-                        ArrayList textTruncated = NfcUtils.divideString(textParsed, 8, '0');
+                        ArrayList<String> textTruncated = NfcUtils.divideString(textParsed, 8, '0');
 
                         String[] page = new String[]{"04","05", "06","07","08","09","0A","0B","0C",
                                 "0D","0E","0F"};
@@ -646,7 +651,8 @@ public class MainActivity extends Activity {
                             for(int indexPage=0;indexPage<page.length;indexPage++){
                                 TransmitParams params = new TransmitParams();
                                 params.controlCode = -1;
-                                params.commandString = "FF D6 00 " + page[indexPage] + " 04 " + textTruncated.get(indexPage).toString();
+                                params.commandString = "FF D6 00 " + page[indexPage] + " 04 "
+                                        + textTruncated.get(indexPage);
                                 new TransmitTask().execute(params);
                             }
                         }catch(Exception e){
@@ -687,6 +693,40 @@ public class MainActivity extends Activity {
 
 
 
+
+
+    protected void getDataFromCard(){
+        //reset des datas lues précédemments
+        GlobalConstants.cardData = "";
+        TransmitParams params = new TransmitParams();
+        params.controlCode = -1;
+
+        //Nombre de page à lire
+        String[] arr;
+        logMsg("Informations mémoires : ");
+
+        if (typeOfCard.equals("Mifare Ultralight")){
+            //Read 4 pages by 4 pages (it seems to be impossible to do more in one command)
+            arr= new String[]{"04","08", "0C"};
+            for (String i:arr) {
+
+                logMsg("Processing reading : " + i);
+                params.commandString = "FF B0 00 " + i + " 10";
+                new TransmitTask().execute(params);
+            }
+
+        }else if (typeOfCard.equals("Mifare classic 1k")){
+            // keyType 60 = key A, read-only | keyType 61 = key B, write only
+            arr = new String[]{"00","04","08","0C","10","14","18","1C","20","24",
+                    "28","2C","30","34","38","3C"};
+            for (String i:arr){
+                loadKeys(i,"60","00");
+                logMsg("Processing reading : " + i);
+                params.commandString = "FF B0 00 "+ i + " 10";
+                new TransmitTask().execute(params);
+            }
+        }
+    }
 
     // Display the message
     public void logMsg(String msg) {
