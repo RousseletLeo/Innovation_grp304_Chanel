@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,8 +10,9 @@
         android:id="@+id/imageView2"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="165dp"
-        android:src="@drawable/ic_settings" />
+        android:layout_marginStart="160dp"
+        android:src="@drawable/ic_settings"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -19,8 +20,9 @@
         android:layout_marginLeft="100dp"
         android:text="@string/parametres"
         android:textColor="#000000"
-        android:textSize="34sp"
-        android:textStyle="bold" />
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:layout_alignParentStart="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,7 +35,8 @@
             android:layout_height="wrap_content"
             android:text="@string/langue"
             android:textColor="#000000"
-            android:textSize="18sp" />
+            android:textSize="20sp"
+            android:layout_marginLeft="35dp" />
 
         <Spinner
             android:id="@+id/sp_langue"
@@ -47,7 +50,7 @@
             android:id="@+id/imageView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="59dp"
+            android:layout_marginLeft="0dp"
             android:src="@android:drawable/ic_menu_mapmode" />
 
     </RelativeLayout>
@@ -63,7 +66,8 @@
             android:layout_height="wrap_content"
             android:text="@string/theme"
             android:textColor="#000000"
-            android:textSize="18sp" />
+            android:textSize="20sp"
+            android:layout_marginLeft="35dp" />
 
         <Spinner
             android:id="@+id/sp_theme"
@@ -77,8 +81,8 @@
             android:id="@+id/imageView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="56dp"
-            android:src="@android:drawable/ic_menu_edit" />
+            android:layout_marginLeft="0dp"
+            android:src="@android:drawable/ic_menu_view" />
 
     </RelativeLayout>
 
@@ -93,7 +97,8 @@
             android:layout_height="wrap_content"
             android:text="@string/notifications"
             android:textColor="#000000"
-            android:textSize="18sp" />
+            android:textSize="20sp"
+            android:layout_marginLeft="35dp" />
 
         <Switch
             android:id="@+id/sw_notification"
@@ -106,7 +111,7 @@
             android:id="@+id/imageView7"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginLeft="102dp"
+            android:layout_marginLeft="0dp"
             android:src="@android:drawable/ic_popup_reminder" />
 
     </RelativeLayout>
@@ -116,12 +121,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sauvegarder"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="25dp"
         android:layout_gravity="end"
         android:onClick="sauvegarder" />
 
     <LinearLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -139,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/niveau_auto"
-            android:textSize="18sp" />
+            android:textSize="22sp" />
 
         <Spinner
             android:id="@+id/sp_auto_salles"
