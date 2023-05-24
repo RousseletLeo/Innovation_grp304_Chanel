@@ -15,11 +15,11 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 public class ActivitySettings extends Activity {
-    TextView messageView;
     Context context;
     Resources resources;
 
@@ -50,6 +50,15 @@ public class ActivitySettings extends Activity {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("langue_select", selectedLangue);
                 editor.apply();
+
+                String language;
+                if (selectedLangue.equals("English")) {
+                    language = "en";
+                } else {
+                    language = "fr";
+                }
+                Locale locale = new Locale(language);
+                Locale.setDefault(locale);
             }
 
             @Override
@@ -80,6 +89,8 @@ public class ActivitySettings extends Activity {
                 SharedPreferences.Editor editor = prefs_2.edit();
                 editor.putString("theme_select", selectedTheme);
                 editor.apply();
+
+
             }
 
             @Override
@@ -142,7 +153,8 @@ public class ActivitySettings extends Activity {
         SharedPreferences prefs_3 = getSharedPreferences("base_de_donnees", Context.MODE_PRIVATE);
         String selectedAuto = prefs_3.getString("auto_select", "Niveau 1");
         // Trouver l'index de la valeur dans le Spinner et le sélectionner
-        ArrayAdapter<CharSequence> adapter_3 = ArrayAdapter.createFromResource(this, R.array.spinner_items_values, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter_3 = ArrayAdapter.createFromResource(
+                this, R.array.spinner_items_values, android.R.layout.simple_spinner_item);
         int position_3 = adapter_3.getPosition(selectedAuto);
         spinnerAuto.setSelection(position_3);
     }

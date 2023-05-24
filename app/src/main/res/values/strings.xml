@@ -58,7 +58,7 @@ Vous êtes au bon endroit !</string>
     <string name="mode_avance">Mode avancé</string>
     <string name="lecteur_deco">Lecteur déconnecté</string>
     <string name="mode_simplifie">Vous vous trouvez en mode simplifié</string>
-    <string name="click_here">Cliquez sur le logo pour accéder au mode simplifié !</string>
+    <string name="click_here">Cliquez sur le logo pour commencer !</string>
     <string name="modifier">Modifier</string>
 
 </resources>
