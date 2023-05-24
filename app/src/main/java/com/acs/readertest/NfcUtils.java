@@ -7,6 +7,7 @@ import android.nfc.NfcAdapter;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NfcUtils {
 
@@ -158,5 +159,48 @@ public class NfcUtils {
             }
         }
         return byteArray;
+    }
+
+
+    public static byte[] concateneByteArrays(byte[] arrayA, byte[] arrayB){
+
+        //Transformer arrayA et arrayB en ArrayList pour pouvoir utiliser la class ArrayList
+        List<Byte> listA = new ArrayList<>();
+        for (byte b : arrayA) {
+            listA.add(b);
+        }
+        List<Byte> listB = new ArrayList<>();
+        for (byte b : arrayB) {
+            listB.add(b);
+        }
+        listA.addAll(listB);
+
+        byte[] byteArray = new byte[listA.size()];
+        for (int i = 0; i < listA.size(); i++) {
+            byteArray[i] = listA.get(i);
+        }
+        return byteArray;
+    }
+
+
+    public static String asciiToHex(String asciiStr) {
+        char[] chars = asciiStr.toCharArray();
+        StringBuilder hex = new StringBuilder();
+        for (char ch : chars) {
+            hex.append(Integer.toHexString((int) ch));
+        }
+
+        return hex.toString();
+    }
+
+    public static String hexToAscii(String hexStr) {
+        StringBuilder output = new StringBuilder("");
+
+        for (int i = 0; i < hexStr.length(); i += 2) {
+            String str = hexStr.substring(i, i + 2);
+            output.append((char) Integer.parseInt(str, 16));
+        }
+
+        return output.toString();
     }
 }

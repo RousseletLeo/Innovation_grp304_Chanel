@@ -11,6 +11,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.nfc.FormatException;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -178,7 +181,7 @@ public class MainActivity extends Activity {
 
 
     //Permet d'enregistrer les données lues, obligatoire pour éviter les problèmes de synchronisation
-    class getData extends AsyncTask<Void, Void, Void>{
+    class getDataTask extends AsyncTask<Void, Void, Void>{
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -194,6 +197,8 @@ public class MainActivity extends Activity {
             localCardData = localCardData.replaceAll("\\s", "");
             ArrayList<String> localCardDataArray = NfcUtils.divideString(localCardData, 2, '0');
 
+            boolean messageFound = false;
+            byte[] byteNDefMessage = new byte[0];
             for(int i=0;i<localCardDataArray.size();i++){
 
                 //TLV 03 <==> NDefMessage
@@ -203,7 +208,42 @@ public class MainActivity extends Activity {
                     int decimalMessageLenght= Integer.parseInt(hexMessageLenght,16);
                     logMsg("Taille du message : ");
                     logMsg(Integer.toString(decimalMessageLenght));
+
+                    //Le message commence après le TLV, on décale i
+                    i+=2;
+                    messageFound = true;
                 }
+
+                //Terminator
+                if(localCardDataArray.get(i).equals("FE")){
+                    messageFound = !messageFound;
+                }
+
+                if(messageFound){
+                    byte[] arrayB = NfcUtils.toByteArray(localCardDataArray.get(i));
+                    byteNDefMessage = NfcUtils.concateneByteArrays(byteNDefMessage,arrayB);
+                }
+            }
+
+            //Fabrication NDefMessage, lecture records, payloads et conversion en texte
+            try {
+                logMsg(NfcUtils.toHexString(byteNDefMessage));
+                NdefMessage NDefMessageCard = new NdefMessage(byteNDefMessage);
+
+                NdefRecord NDefRecordCard = NDefMessageCard.getRecords()[0];
+                byte[] payload = NDefRecordCard.getPayload();
+                String hexStringPayload = NfcUtils.toHexString(payload);
+
+                hexStringPayload = hexStringPayload.replaceAll("\\s", "");
+                String hexStringMessage = hexStringPayload.substring(6);
+
+
+                String StringMessage = NfcUtils.hexToAscii(hexStringMessage);
+                logMsg("Message lu : ");
+                logMsg(StringMessage);
+
+            } catch (FormatException e) {
+                logMsg("RuntimeException");
             }
         }
     }
@@ -612,7 +652,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 getDataFromCard();
-                new getData().execute();
+                new getDataTask().execute();
             }
         });
 
