@@ -11,6 +11,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.nfc.FormatException;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,7 +29,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.acs.smartcard.Features;
 import com.acs.smartcard.Reader;
@@ -47,18 +49,17 @@ import java.util.Date;
 
 
 
-//VERSION MERGE FINAL
+//TO DO : FF CA 00 00 00, écrire PLUSIEURS messages à la suite. Lire plusieurs message et les lister, les afficher
+    // sous format texte, enregistrer les données dans BDD, généraliser le code. Faire ca pour les deux cartes
 
 
 public class MainActivity extends Activity {
-
     static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
 
     private static final String[] powerActionStrings = { "Power Down", "Cold Reset", "Warm Reset" };
 
     private static final String[] stateStrings = { "Unknown", "Absent", "Present",
             "Swallowed", "Powered", "Negotiable", "Specific" };
-
     private UsbManager mManager;
     private static Reader mReader;
     private PendingIntent mPermissionIntent;
@@ -161,6 +162,11 @@ public class MainActivity extends Activity {
         }
     };
 
+
+
+
+
+
     //Ouvrir l'accès au lecteur
     class OpenTask extends AsyncTask<UsbDevice, Void, Exception> {
 
@@ -215,9 +221,8 @@ public class MainActivity extends Activity {
 
 
 
-
     //Permet d'enregistrer les données lues, obligatoire pour éviter les problèmes de synchronisation
-    class getData extends AsyncTask<Void, Void, Void>{
+    class getDataTask extends AsyncTask<Void, Void, Void>{
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -233,27 +238,53 @@ public class MainActivity extends Activity {
             localCardData = localCardData.replaceAll("\\s", "");
             ArrayList<String> localCardDataArray = NfcUtils.divideString(localCardData, 2, '0');
 
-            ArrayList<byte[]> stockagelectureoctets = new ArrayList<>();
-            for (int i = 0; i < localCardDataArray.size(); i++) {
+            boolean messageFound = false;
+            byte[] byteNDefMessage = new byte[0];
+            for(int i=0;i<localCardDataArray.size();i++){
 
                 //TLV 03 <==> NDefMessage
-                if (localCardDataArray.get(i).equals("03")) {
-                    String hexMessageLenght = localCardDataArray.get(i + 1);
+                if(localCardDataArray.get(i).equals("03")){
+                    String hexMessageLenght = localCardDataArray.get(i+1);
                     //La taille du message est donnée dans le TLV en hexa, on la converti en décimal
-                    int decimalMessageLenght = Integer.parseInt(hexMessageLenght, 16);
+                    int decimalMessageLenght= Integer.parseInt(hexMessageLenght,16);
                     logMsg("Taille du message : ");
                     logMsg(Integer.toString(decimalMessageLenght));
-                    i += 2;
-                    stockagelectureoctets = new ArrayList<>();
-                    while (!(localCardDataArray.get(i).equals("FE"))) {
-                        byte[] byteValue = NfcUtils.toByteArray(localCardDataArray.get(i));
-                        stockagelectureoctets.add(byteValue);
-                        i++;
-                    }
+
+                    //Le message commence après le TLV, on décale i
+                    i+=2;
+                    messageFound = true;
+                }
+
+                //Terminator
+                if(localCardDataArray.get(i).equals("FE")){
+                    messageFound = !messageFound;
+                }
+
+                if(messageFound){
+                    byte[] arrayB = NfcUtils.toByteArray(localCardDataArray.get(i));
+                    byteNDefMessage = NfcUtils.concateneByteArrays(byteNDefMessage,arrayB);
                 }
             }
-            for (int j = 0; j <stockagelectureoctets.size(); j++){
-                logMsg(String.valueOf(stockagelectureoctets.get(j)));
+
+            //Fabrication NDefMessage, lecture records, payloads et conversion en texte
+            try {
+                logMsg(NfcUtils.toHexString(byteNDefMessage));
+                NdefMessage NDefMessageCard = new NdefMessage(byteNDefMessage);
+
+                NdefRecord NDefRecordCard = NDefMessageCard.getRecords()[0];
+                byte[] payload = NDefRecordCard.getPayload();
+                String hexStringPayload = NfcUtils.toHexString(payload);
+
+                hexStringPayload = hexStringPayload.replaceAll("\\s", "");
+                String hexStringMessage = hexStringPayload.substring(6);
+
+
+                String StringMessage = NfcUtils.hexToAscii(hexStringMessage);
+                logMsg("Message lu : ");
+                logMsg(StringMessage);
+
+            } catch (FormatException e) {
+                logMsg("RuntimeException");
             }
         }
     }
@@ -352,6 +383,7 @@ public class MainActivity extends Activity {
 
             } else {
                 logMsg("Active Protocol: T=1");
+
             }
         }
     }
@@ -443,7 +475,13 @@ public class MainActivity extends Activity {
             if (progress[0].e != null) {
                 logMsg(progress[0].e.toString());
             } else {
-                logBuffer(progress[0].response, progress[0].responseLength);
+                    GlobalConstants.cardData += logBuffer(progress[0].response, progress[0].responseLength);
+                    //Retirer les 5 derniers caractères de la String de réponse, qui correspondent
+                    //au code d'erreur de la Task lecteur
+                    for(int i =0;i<=5;i++){
+                        GlobalConstants.cardData = GlobalConstants.cardData.
+                                replaceFirst(".$", "");
+                    }
             }
         }
     }
@@ -460,6 +498,18 @@ public class MainActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.veuillez_brancher_le_lecteur)
+                .setTitle(R.string.lecteur_deco)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
 
         // Get USB manager
@@ -633,6 +683,7 @@ public class MainActivity extends Activity {
                 params.commandString = mCommandEditText.getText().toString();
                 logMsg("Slot 0 : Transmitting APDU...");
                 new TransmitTask().execute(params);
+
             }
         });
 
@@ -641,34 +692,8 @@ public class MainActivity extends Activity {
         mReadTagButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                logMsg("Processing Read command : please wait ...\n");
-                TransmitParams params = new TransmitParams();
-                params.controlCode = -1;
-
-                //Number of pages we want to read
-                String[] arr;
-                logMsg("Informations mémoires : ");
-
-                if (typeOfCard.equals("Mifare Ultralight")){
-                    //Read 4 pages by 4 pages (it seems to be impossible to do more in one command)
-                    arr= new String[]{"04","08", "0C"};
-                    for (String i:arr) {
-                        logMsg("Processing reading : " + i);
-                        params.commandString = "FF B0 00 " + i + " 10";
-                        new TransmitTask().execute(params);
-                    }
-
-                }else if (typeOfCard.equals("Mifare classic 1k")){
-                    // keyType 60 = key A, read-only | keyType 61 = key B, write only
-                    arr = new String[]{"00","04","08","0C","10","14","18","1C","20","24",
-                            "28","2C","30","34","38","3C"};
-                    for (String i:arr){
-                        loadKeys(i,"60","00");
-                        logMsg("Processing reading : " + i);
-                        params.commandString = "FF B0 00 "+ i + " 10";
-                        new TransmitTask().execute(params);
-                    }
-                }
+                getDataFromCard();
+                new getDataTask().execute();
             }
         });
 
@@ -685,12 +710,35 @@ public class MainActivity extends Activity {
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
 
+
                 // Set up the buttons
                 builder.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        //Récupération text, conversion en NDefMessage, supprimer les espaces
+                        //et séparer le message en groupe de 4 octets
                         m_Text = input.getText().toString();
                         String textParsed = NfcUtils.parseText(m_Text);
+                        textParsed = textParsed.replaceAll("\\s", "");
+                        ArrayList<String> textTruncated = NfcUtils.divideString(textParsed, 8, '0');
+
+                        String[] page = new String[]{"04","05", "06","07","08","09","0A","0B","0C",
+                                "0D","0E","0F"};
+
+                        //Ecriture 4 octets par 4 pour des ultralight, et 10 par 10 sinon
+                        //(restrictions des cartes)
+                        try {
+                            for(int indexPage=0;indexPage<page.length;indexPage++){
+                                TransmitParams params = new TransmitParams();
+                                params.controlCode = -1;
+                                params.commandString = "FF D6 00 " + page[indexPage] + " 04 "
+                                        + textTruncated.get(indexPage);
+                                new TransmitTask().execute(params);
+                            }
+                        }catch(Exception e){
+                            logMsg("Fin mémoire.");
+                        }
                         logMsg("Votre message à bien été enregistré : ");
                         logMsg(m_Text);
                         logMsg(textParsed);
@@ -709,7 +757,6 @@ public class MainActivity extends Activity {
         setButtons(false);
         // Hide input window
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
     }
 
 
@@ -727,6 +774,40 @@ public class MainActivity extends Activity {
 
 
 
+
+
+    protected void getDataFromCard(){
+        //reset des datas lues précédemments
+        GlobalConstants.cardData = "";
+        TransmitParams params = new TransmitParams();
+        params.controlCode = -1;
+
+        //Nombre de page à lire
+        String[] arr;
+        logMsg("Informations mémoires : ");
+
+        if (typeOfCard.equals("Mifare Ultralight")){
+            //Read 4 pages by 4 pages (it seems to be impossible to do more in one command)
+            arr= new String[]{"04","08", "0C"};
+            for (String i:arr) {
+
+                logMsg("Processing reading : " + i);
+                params.commandString = "FF B0 00 " + i + " 10";
+                new TransmitTask().execute(params);
+            }
+
+        }else if (typeOfCard.equals("Mifare classic 1k")){
+            // keyType 60 = key A, read-only | keyType 61 = key B, write only
+            arr = new String[]{"00","04","08","0C","10","14","18","1C","20","24",
+                    "28","2C","30","34","38","3C"};
+            for (String i:arr){
+                loadKeys(i,"60","00");
+                logMsg("Processing reading : " + i);
+                params.commandString = "FF B0 00 "+ i + " 10";
+                new TransmitTask().execute(params);
+            }
+        }
+    }
 
     // Display the message
     public void logMsg(String msg) {
