@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout"
+    android:id="@+id/Layout_help"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -83,15 +83,9 @@
         android:id="@+id/dedicace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginRight="0dp"
         android:text="@string/dedicace"
         android:textColor="@color/gris"
         android:textSize="12sp"
-        tools:layout_conversion_absoluteHeight="211dp"
-        tools:layout_conversion_absoluteWidth="379dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="383dp" />
+        android:translationY="210dp" />
 
 </LinearLayout>

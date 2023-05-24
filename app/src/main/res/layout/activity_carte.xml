@@ -13,4 +13,13 @@
         android:text="@string/veuillez_scanner_une_carte"
         android:textSize="24sp" />
 
+    <ImageView
+        android:id="@+id/carteImageView"
+        android:layout_width="148dp"
+        android:layout_height="119dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="387dp"
+        android:src="@drawable/ic_carte" />
+
 </RelativeLayout>

@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="niv_auto_sett">0</integer>
+    <string name="langue_select">Français</string>
+    <string name="theme_select">Automatique</string>
+    <bool name="etat_switch_notifs">true</bool>
+    <string name="auto_select">Niveau 1</string>
+    <string name="nom_carte" translatable="false"> Kris PIGOT</string>
+    <string name="bio_carte" translatable="false">Hey !</string>
+    <string name="email_carte" translatable="false">test@esme.fr</string>
+    <string name="num_tel_carte" translatable="false">00 00 00 00 00</string>
+    <string name="poste_carte" translatable="false">Développeur</string>
+    <string name="niv_auto_carte" translatable="false">0</string>
 </resources>
