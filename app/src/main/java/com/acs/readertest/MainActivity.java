@@ -55,12 +55,14 @@ import java.util.Date;
 
 
 public class MainActivity extends Activity {
+
     static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
 
     private static final String[] powerActionStrings = { "Power Down", "Cold Reset", "Warm Reset" };
 
     private static final String[] stateStrings = { "Unknown", "Absent", "Present",
             "Swallowed", "Powered", "Negotiable", "Specific" };
+
     private UsbManager mManager;
     private static Reader mReader;
     private PendingIntent mPermissionIntent;
@@ -123,11 +125,6 @@ public class MainActivity extends Activity {
             }
         }
     };
-
-
-
-
-
 
     //Ouvrir l'accès au lecteur
     class OpenTask extends AsyncTask<UsbDevice, Void, Exception> {
@@ -387,7 +384,6 @@ public class MainActivity extends Activity {
 
             } else {
                 logMsg("Active Protocol: T=1");
-
             }
         }
     }
@@ -687,7 +683,6 @@ public class MainActivity extends Activity {
                 params.commandString = mCommandEditText.getText().toString();
                 logMsg("Slot 0 : Transmitting APDU...");
                 new TransmitTask().execute(params);
-
             }
         });
 
@@ -696,8 +691,34 @@ public class MainActivity extends Activity {
         mReadTagButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDataFromCard();
-                new getDataTask().execute();
+                logMsg("Processing Read command : please wait ...\n");
+                TransmitParams params = new TransmitParams();
+                params.controlCode = -1;
+
+                //Number of pages we want to read
+                String[] arr;
+                logMsg("Informations mémoires : ");
+
+                if (typeOfCard.equals("Mifare Ultralight")){
+                    //Read 4 pages by 4 pages (it seems to be impossible to do more in one command)
+                    arr= new String[]{"04","08", "0C"};
+                    for (String i:arr) {
+                        logMsg("Processing reading : " + i);
+                        params.commandString = "FF B0 00 " + i + " 10";
+                        new TransmitTask().execute(params);
+                    }
+
+                }else if (typeOfCard.equals("Mifare classic 1k")){
+                    // keyType 60 = key A, read-only | keyType 61 = key B, write only
+                    arr = new String[]{"00","04","08","0C","10","14","18","1C","20","24",
+                            "28","2C","30","34","38","3C"};
+                    for (String i:arr){
+                        loadKeys(i,"60","00");
+                        logMsg("Processing reading : " + i);
+                        params.commandString = "FF B0 00 "+ i + " 10";
+                        new TransmitTask().execute(params);
+                    }
+                }
             }
         });
 
@@ -713,7 +734,6 @@ public class MainActivity extends Activity {
                 final EditText input = new EditText(MainActivity.this);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
-
 
                 // Set up the buttons
                 builder.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
@@ -761,6 +781,7 @@ public class MainActivity extends Activity {
         setButtons(false);
         // Hide input window
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
     }
 
 

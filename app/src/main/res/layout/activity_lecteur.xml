@@ -13,6 +13,20 @@
         android:text="@string/veuillez_brancher_le_lecteur"
         android:textSize="24sp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="launchActivityProfil" />
+
+    <ImageView
+        android:id="@+id/usbImageView"
+        android:layout_width="148dp"
+        android:layout_height="119dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="93dp"
+        android:src="@drawable/ic_lecteur" />
+
     <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
