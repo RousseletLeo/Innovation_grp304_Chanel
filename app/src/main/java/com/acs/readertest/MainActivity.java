@@ -16,6 +16,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -24,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.acs.smartcard.Features;
 import com.acs.smartcard.Reader;
@@ -212,6 +215,48 @@ public class MainActivity extends Activity {
 
 
 
+
+    //Permet d'enregistrer les données lues, obligatoire pour éviter les problèmes de synchronisation
+    class getData extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            logMsg("Contenu mémoire : ");
+            logMsg(GlobalConstants.cardData);
+
+            String localCardData = GlobalConstants.cardData;
+            localCardData = localCardData.replaceAll("\\s", "");
+            ArrayList<String> localCardDataArray = NfcUtils.divideString(localCardData, 2, '0');
+
+            ArrayList<byte[]> stockagelectureoctets = new ArrayList<>();
+            for (int i = 0; i < localCardDataArray.size(); i++) {
+
+                //TLV 03 <==> NDefMessage
+                if (localCardDataArray.get(i).equals("03")) {
+                    String hexMessageLenght = localCardDataArray.get(i + 1);
+                    //La taille du message est donnée dans le TLV en hexa, on la converti en décimal
+                    int decimalMessageLenght = Integer.parseInt(hexMessageLenght, 16);
+                    logMsg("Taille du message : ");
+                    logMsg(Integer.toString(decimalMessageLenght));
+                    i += 2;
+                    stockagelectureoctets = new ArrayList<>();
+                    while (!(localCardDataArray.get(i).equals("FE"))) {
+                        byte[] byteValue = NfcUtils.toByteArray(localCardDataArray.get(i));
+                        stockagelectureoctets.add(byteValue);
+                        i++;
+                    }
+                }
+            }
+            for (int j = 0; j <stockagelectureoctets.size(); j++){
+                logMsg(String.valueOf(stockagelectureoctets.get(j)));
+            }
+        }
+    }
 
 
 

@@ -13,10 +13,10 @@
         android:text="@string/veuillez_brancher_le_lecteur"
         android:textSize="24sp" />
 
-    <Button
+    <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="launchActivityProfil" />
+        android:onClick="launchActivityProfil" />-->
 
     <ImageView
         android:id="@+id/usbImageView"

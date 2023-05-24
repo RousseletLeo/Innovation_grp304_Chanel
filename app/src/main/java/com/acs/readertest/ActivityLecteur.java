@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
-import android.nfc.NfcAdapter;
-import android.nfc.NfcManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,17 +29,6 @@ public class ActivityLecteur extends Activity {
         ImageView lecteurImageView = findViewById(R.id.usbImageView);
         Animation lecteurAnimation = AnimationUtils.loadAnimation(this, R.anim.usb_animation);
         lecteurImageView.startAnimation(lecteurAnimation);
-
-        // Vérifier si le lecteur NFC est branché en USB
-        NfcManager nfcManager = (NfcManager) getSystemService(Context.NFC_SERVICE);
-        NfcAdapter nfcAdapter = nfcManager.getDefaultAdapter();
-        if (nfcAdapter == null) {
-            // Le lecteur NFC n'est pas disponible
-            Toast.makeText(this, "Lecteur NFC non disponible", Toast.LENGTH_SHORT).show();
-        } else {
-            // Le lecteur NFC est disponible
-            Toast.makeText(this, "Lecteur NFC disponible", Toast.LENGTH_SHORT).show();
-        }
 
         // Créer un BroadcastReceiver pour détecter le branchement/débranchement des périphériques USB
         usbReceiver = new BroadcastReceiver() {
