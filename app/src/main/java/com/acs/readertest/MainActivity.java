@@ -784,6 +784,7 @@ public class MainActivity extends Activity {
         params.controlCode = -1;
 
         //Nombre de page à lire
+
         String[] arr;
         logMsg("Informations mémoires : ");
 
